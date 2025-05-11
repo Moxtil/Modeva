@@ -11,6 +11,19 @@ export default function SearchField({ isOpen, onClose }) {
     onClose();
   };
 
+  const submitSearch = (e) => {
+    e.preventDefault();
+    if (query != "") {
+      router.push(`/shopping/search/${query}`);
+      handleSearch();
+    } else {
+      Swal.fire({
+        text: "Make Sure Search Input Is Filled Up",
+        icon: "question",
+      });
+    }
+  };
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -27,7 +40,10 @@ export default function SearchField({ isOpen, onClose }) {
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4">
+          <form
+            className="flex min-h-full items-center justify-center p-4"
+            onSubmit={submitSearch}
+          >
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -60,17 +76,7 @@ export default function SearchField({ isOpen, onClose }) {
                     Cancel
                   </button>
                   <button
-                    onClick={() => {
-                      if (query != "") {
-                        router.push(`/shopping/search/${query}`);
-                        handleSearch();
-                      } else {
-                        Swal.fire({
-                          text: "Make Sure Search Input Is Filled Up",
-                          icon: "question",
-                        });
-                      }
-                    }}
+                    type="submit"
                     className="cursor-pointer rounded-md bg-green-400 transition-all px-4 py-2 text-sm text-white hover:bg-green-500"
                   >
                     Search
@@ -78,7 +84,7 @@ export default function SearchField({ isOpen, onClose }) {
                 </div>
               </Dialog.Panel>
             </Transition.Child>
-          </div>
+          </form>
         </div>
       </Dialog>
     </Transition>
