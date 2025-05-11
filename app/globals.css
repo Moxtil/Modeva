@@ -12,7 +12,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
@@ -20,7 +20,57 @@
 }
 
 body {
-  background: var(--background);
+  background: #f6f3e5;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+@media (max-width: 386px) {
+  .shop-card,
+  .fav-item {
+    flex-basis: 300px !important;
+    width: 300px !important;
+  }
+}
+@media (min-width: 386px) and (max-width: 476px) {
+  .shop-card,
+  .fav-item {
+    flex-basis: 350px !important;
+    width: 155px !important;
+  }
+}
+@media (min-width: 743px) and (max-width: 1055px) {
+  .shop-card,
+  .fav-item {
+    flex-basis: 200px !important;
+    width: 200px !important;
+  }
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 85px !important;
+  margin: 250px auto;
+  aspect-ratio: 1;
+  --c: no-repeat linear-gradient(#8b4513 0 0);
+  background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+  background-size: 20% 100%;
+  animation: l1 1s infinite linear;
+}
+@keyframes l1 {
+  0% {
+    background-size: 20% 100%, 20% 100%, 20% 100%;
+  }
+  33% {
+    background-size: 20% 10%, 20% 100%, 20% 100%;
+  }
+  50% {
+    background-size: 20% 100%, 20% 10%, 20% 100%;
+  }
+  66% {
+    background-size: 20% 100%, 20% 100%, 20% 10%;
+  }
+  100% {
+    background-size: 20% 100%, 20% 100%, 20% 100%;
+  }
 }
