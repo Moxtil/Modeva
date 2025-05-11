@@ -72,8 +72,8 @@ const ShoppingCard = ({ id, title, price, img, item, rate, brand }) => {
             </svg>
           </div>
           <Link href={`/shopping/${id}`}>
-            <button className="group flex text-sm mx-1 h-8 w-fit flex-col items-center justify-center rounded-full bg-[#F1ddcf] px-[2em] py-[0.5em] shadow-[inset_0px_2px_4px_0px_#f9f1eb,inset_0px_-2px_4px_0px_#e8c8b0,0px_-2px_16px_0px_#e8c8b0,0px_2px_16px_0px_#f9f1eb] duration-200 hover:translate-y-[5%] active:translate-y-[7%] active:shadow-[inset_0px_-2px_4px_0px_#f9f1eb,inset_0px_2px_4px_0px_#e8c8b0,0px_2px_16px_0px_#e8c8b0,0px_2px_16px_0px_#f9f1eb]">
-              <p className="font-nunito text[16px] cursor-pointer font-semibold text-[#d19466] duration-200 group-active:translate-y-[5%]">
+            <button className="group flex text-sm mx-1 h-7 px-4 flex-col items-center justify-center rounded-full bg-[#F1ddcf]  py-[0.5em] shadow-[inset_0px_2px_4px_0px_#f9f1eb,inset_0px_-2px_4px_0px_#e8c8b0,0px_-2px_16px_0px_#e8c8b0,0px_2px_16px_0px_#f9f1eb] duration-200 hover:translate-y-[5%] active:translate-y-[7%] active:shadow-[inset_0px_-2px_4px_0px_#f9f1eb,inset_0px_2px_4px_0px_#e8c8b0,0px_2px_16px_0px_#e8c8b0,0px_2px_16px_0px_#f9f1eb]">
+              <p className="font-nunito text-[14px] cursor-pointer font-semibold text-[#d19466] duration-200 group-active:translate-y-[5%]">
                 Details
               </p>
             </button>
@@ -84,10 +84,12 @@ const ShoppingCard = ({ id, title, price, img, item, rate, brand }) => {
   );
 };
 
+//  min-width: 150px;
+//    height: 450px;
 const StyledWrapper = styled.div`
   .card {
-    min-width: 150px;
-    height: 450px;
+    width: 100%;
+    height: 100%;
     padding: 8px;
     position: relative;
     overflow: visible;

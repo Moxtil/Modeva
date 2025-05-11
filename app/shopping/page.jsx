@@ -20,12 +20,12 @@ export default function page() {
     getData();
   }, [itemsCount]);
 
-  if (!user) {
+  if (!data || !user) {
     return <div className="loader"></div>;
   } else
     return (
       <main className="p-1">
-        <section className="flex flex-wrap justify-center items-center gap-3 my-4">
+        <section className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 w-full my-4">
           {data?.map((item) => {
             return (
               <ShoppingCard

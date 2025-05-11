@@ -88,10 +88,10 @@ export default function AddressPage() {
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            name="street"
-            value={address.street}
+            name="country"
+            value={address.country}
             onChange={handleChange}
-            placeholder="Street Address"
+            placeholder="Country"
             required
             className="w-full p-3 border rounded"
           />
@@ -111,11 +111,12 @@ export default function AddressPage() {
             required
             className="w-full p-3 border rounded"
           />
+
           <input
-            name="country"
-            value={address.country}
+            name="street"
+            value={address.street}
             onChange={handleChange}
-            placeholder="Country"
+            placeholder="Street Address"
             required
             className="w-full p-3 border rounded"
           />

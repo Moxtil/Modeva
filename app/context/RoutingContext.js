@@ -18,7 +18,7 @@ export default function RoutingContext({ children }) {
   }, []);
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
-      if (!user && path != "/login") {
+      if (!user && path !== "/login") {
         if (path !== "/sign-up") {
           router.push("/login");
         }

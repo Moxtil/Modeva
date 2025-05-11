@@ -31,7 +31,7 @@ export default async function page({ params }) {
         </div>
       ) : (
         <Suspense fallback={<div className="loader"></div>}>
-          <section className="flex flex-wrap justify-center items-center gap-3 my-4">
+          <section className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 w-full my-4">
             {data?.map((item) => {
               return (
                 <ShoppingCard

@@ -20,8 +20,8 @@ const LogoutButton = () => {
           confirmButtonText: "Yes, Log out!",
         }).then((result) => {
           if (result.isConfirmed) {
+            router.push("/login");
             logout();
-            router.push("/sign-up");
           }
         });
       }}

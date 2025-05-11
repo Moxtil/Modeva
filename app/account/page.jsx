@@ -167,63 +167,10 @@ export default function page() {
                 </Link>
               )}
             </h3>
-            <section className="flex items-start gap-5 flex-col">
-              <button
-                className="cursor-pointer w-[175px]  inline-flex items-center px-4 py-2 bg-red-600 transition ease-in-out delay-75 hover:bg-red-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
-                onClick={() => {
-                  Swal.fire({
-                    title: "Do You Want To Delete This Account?",
-                    text: "You won't be able to revert this!",
-                    icon: "error",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!",
-                  }).then(async () => {
-                    await showInputPopup(user.email);
-                    setTimeout(() => {
-                      handleDeleteAccount();
-                    }, 500);
-                  });
-                }}
-              >
-                <svg
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="h-5 w-5 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    strokeWidth={2}
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                Delete Account
-              </button>
-              <div
-                onClick={() => {
-                  Swal.fire({
-                    title: "Do You Want To Log Out?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, Log out!",
-                  }).then(async (result) => {
-                    if (result.isConfirmed) {
-                      await logout();
-                      router.push("/login");
-                    }
-                  });
-                }}
-              >
-                <LogoutButton />
-              </div>
-            </section>
+            <h3 className="grow w-full flex items-center gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
+              <MdLogin />
+              Last Sing In {user?.metadata.lastSignInTime}
+            </h3>
           </div>
           <div className="flex flex-col gap-8 items-start w-full">
             <div className="grow w-full flex items-center justify-between gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
@@ -267,10 +214,63 @@ export default function page() {
               <FaUserFriends />
               Member Since {user?.metadata.creationTime}
             </h3>
-            <h3 className="grow w-full flex items-center gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
-              <MdLogin />
-              Last Sing In {user?.metadata.lastSignInTime}
-            </h3>
+          </div>
+        </section>
+        <section className="flex items-start gap-5 flex-col">
+          <button
+            className="cursor-pointer w-[175px]  inline-flex items-center px-4 py-2 bg-red-600 transition ease-in-out delay-75 hover:bg-red-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
+            onClick={() => {
+              Swal.fire({
+                title: "Do You Want To Delete This Account?",
+                text: "You won't be able to revert this!",
+                icon: "error",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+              }).then(async () => {
+                await showInputPopup(user.email);
+                setTimeout(() => {
+                  handleDeleteAccount();
+                }, 500);
+              });
+            }}
+          >
+            <svg
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              fill="none"
+              className="h-5 w-5 mr-2"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                strokeWidth={2}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+            </svg>
+            Delete Account
+          </button>
+          <div
+            onClick={() => {
+              Swal.fire({
+                title: "Do You Want To Log Out?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Log out!",
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  await logout();
+                  router.push("/login");
+                }
+              });
+            }}
+          >
+            <LogoutButton />
           </div>
         </section>
         {/*  */}

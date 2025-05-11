@@ -41,8 +41,9 @@ export default function page() {
             Wishlist
           </h2>
         </header>
-        <section className="flex flex-wrap justify-center items-center gap-4 p-2">
-          {favoriteItems.length == 0 ? (
+
+        <section className="flex justify-center items-center p-2 my-5">
+          {favoriteItems.length === 0 && (
             <div>
               <Image
                 src={wishlistImg}
@@ -57,63 +58,64 @@ export default function page() {
                 <PayButton title={"Go Shopping"} link={`/shopping`} />
               </div>
             </div>
-          ) : (
-            favoriteItems.map((item) => {
-              return (
+          )}
+        </section>
+        <section className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 w-full my-4">
+          {favoriteItems.map((item) => {
+            return (
+              <div
+                className="fav-item overflow-hidden hover:scale-[1.05] transition-all duration-200
+                 w-full relative bg-gray-50  p-3 flex flex-col gap-1 rounded-xl shadow-md shadow-[#333]"
+                key={item.id}
+              >
                 <div
-                  className="fav-item  w-[160px] h-[300px] overflow-hidden hover:scale-[1.05] transition-all duration-200
-                md:basis-[300px] md:w-[275px]   relative bg-gray-50  p-3 flex flex-col gap-1 rounded-xl shadow-md shadow-[#333]"
-                  key={item.id}
+                  className="absolute  top-2 right-2 hover:bg-[#eee]  transition-all duration-300 rounded-full p-1"
+                  onClick={async () => {
+                    await toggleFavorite(user, item);
+                    Swal.fire({
+                      title: "Done!",
+                      text: "Item Is Not On Your Favorite List!",
+                      icon: "success",
+                      timer: 750,
+                      showConfirmButton: false,
+                    });
+                    loadFavorites(user);
+                  }}
                 >
-                  <div
-                    className="absolute  top-2 right-2 hover:bg-[#eee]  transition-all duration-300 rounded-full p-1"
-                    onClick={async () => {
-                      await toggleFavorite(user, item);
-                      Swal.fire({
-                        title: "Done!",
-                        text: "Item Is Not On Your Favorite List!",
-                        icon: "success",
-                        timer: 750,
-                        showConfirmButton: false,
-                      });
-                      loadFavorites(user);
-                    }}
-                  >
-                    <AddToFavButton item={item} size={25} />
+                  <AddToFavButton item={item} size={25} />
+                </div>
+                <Link
+                  href={`/shopping/${item.id}`}
+                  className="flex justify-center items-center"
+                >
+                  <Image
+                    src={item?.images[0]}
+                    alt={item.title}
+                    width={300}
+                    height={200}
+                    className="h-48 object-contain"
+                  />
+                </Link>
+                <div className="flex flex-col gap-3 p-1 justify-between ">
+                  <div className="flex justify-between items-center gap-2 overflow-hidden">
+                    <h2 className="text-sm font-semibold  truncate">
+                      {item.title}
+                    </h2>
+                    <h2 className="text-yellow-400 flex items-center gap-1 font-semibold">
+                      <FaStar size={17} color="gold" />
+                      <span>{item.rating}</span>
+                    </h2>
                   </div>
-                  <Link
-                    href={`/shopping/${item.id}`}
-                    className="flex justify-center items-center"
-                  >
-                    <Image
-                      src={item?.images[0]}
-                      alt={item.title}
-                      width={300}
-                      height={200}
-                      className="h-48 object-contain"
-                    />
-                  </Link>
-                  <div className="flex flex-col gap-3 p-1 justify-between ">
-                    <div className="flex justify-between items-center gap-2 overflow-hidden">
-                      <h2 className="text-sm font-semibold  truncate">
-                        {item.title}
-                      </h2>
-                      <h2 className="text-yellow-400 flex items-center gap-1 font-semibold">
-                        <FaStar size={17} color="gold" />
-                        <span>{item.rating}</span>
-                      </h2>
-                    </div>
-                    <div className="flex justify-between items-center gap-2">
-                      <p className="text-[#757575] text-[12px]">
-                        {item.category}
-                      </p>
-                      <h2 className="font-bold text-[16px]">${item.price}</h2>
-                    </div>
+                  <div className="flex justify-between items-center gap-2">
+                    <p className="text-[#757575] text-[12px]">
+                      {item.category}
+                    </p>
+                    <h2 className="font-bold text-[16px]">${item.price}</h2>
                   </div>
                 </div>
-              );
-            })
-          )}
+              </div>
+            );
+          })}
         </section>
       </main>
     );

@@ -24,6 +24,7 @@ import ShopCardTwo from "./components/ShopCardTwo";
 import Button from "./components/Button";
 import Link from "next/link";
 import ShopCardThree from "./components/ShopCardThree";
+import HomeWrapper from "./context/HomeWrapper";
 const prompt = Prompt({
   subsets: ["latin"],
   weight: ["600"],
