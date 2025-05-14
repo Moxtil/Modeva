@@ -15,7 +15,6 @@ export default function page() {
       const req = await fetch(fetchUrl);
       const result = await req.json();
       setData(result.products);
-      console.log(result);
     };
     getData();
   }, [itemsCount]);

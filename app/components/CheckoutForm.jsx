@@ -154,7 +154,7 @@ export default function ContactForm() {
         </div>
       </div>
 
-      <div className="flex justify-between items-center mt-10">
+      <div className="flex justify-between items-center gap-2 mt-10">
         <button
           onClick={() => {
             if (
