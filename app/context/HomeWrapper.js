@@ -1,8 +1,21 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
+import { useAuth } from "./AuthContext";
 
-export default function HomeWrapper({ children }) {
+export default function LoadWrapper({ children }) {
+  const { user } = useAuth();
+
+  if (!user) {
+    return (
+      <div className="text-black font-semibold text-4xl text-center my-[50px]">
+        <span className="text-[#8B4513]">M</span>ODEVA
+        {/* <br /> */}
+        <div className="loader"></div>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}

@@ -1,10 +1,9 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
-import { MyCartItems } from "./CartContext";
 
 export default function RoutingContext({ children }) {
   const router = useRouter();
@@ -12,9 +11,7 @@ export default function RoutingContext({ children }) {
   const path = usePathname();
 
   useEffect(() => {
-    if (path.includes("/checkout")) {
-      router.push("/");
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {

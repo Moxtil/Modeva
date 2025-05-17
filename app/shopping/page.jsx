@@ -1,9 +1,8 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import ShoppingCard from "../components/ShoppingCard";
-import { MyCartItems } from "../context/CartContext";
+import LoadWrapper from "../context/HomeWrapper";
 export default function page() {
-  const { user } = useContext(MyCartItems);
   const [data, setData] = useState([]);
   const [itemsCount, setItemsCount] = useState(30);
   const [fetchUrl, setFetchUrl] = useState(
@@ -19,12 +18,13 @@ export default function page() {
     getData();
   }, [itemsCount]);
 
-  if (!data || !user) {
-    return <div className="loader"></div>;
-  } else
-    return (
+  return (
+    <LoadWrapper>
       <main className="p-1">
-        <section className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 w-full my-4">
+        <section
+          className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 w-full my-4"
+          data-aos="fade-up"
+        >
           {data?.map((item) => {
             return (
               <ShoppingCard
@@ -36,6 +36,7 @@ export default function page() {
                 item={item}
                 rate={item.rating}
                 brand={item?.brand || "No Brand"}
+                fadeUp={"fade-up"}
               />
             );
           })}
@@ -56,5 +57,6 @@ export default function page() {
           </button>
         </div>
       </main>
-    );
+    </LoadWrapper>
+  );
 }

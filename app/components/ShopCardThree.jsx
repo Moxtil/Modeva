@@ -3,7 +3,7 @@ import React from "react";
 
 const ShopCardThree = ({ img, desc, rate, category, price }) => {
   return (
-    <div className="grow-1 basis-[300px] max-w-[500px] h-full m-2 group p-2 bg-white/10 rounded-lg flex flex-col items-center justify-center gap-2 relative after:absolute after:h-full after:bg-[#abd373] z-20 shadow-lg after:-z-20 after:w-full after:inset-0 after:rounded-lg transition-all duration-300 hover:transition-all hover:duration-300 after:transition-all after:duration-500 after:hover:transition-all after:hover:duration-500 overflow-hidden cursor-pointer after:-translate-y-full after:hover:translate-y-0  [&_p]:transition-all hover:scale-[1.05]">
+    <div className="grow-1 basis-[300px] max-w-[500px] h-full m-2 group p-2 bg-white/10 rounded-lg flex flex-col items-center justify-center gap-2 relative after:absolute after:h-full after:bg-[#abd373] z-20 shadow-lg after:-z-20 after:w-full after:inset-0 after:rounded-lg transition-all duration-300 hover:transition-all hover:duration-300 after:transition-all after:duration-500 after:hover:transition-all after:hover:duration-500 overflow-hidden cursor-pointer after:-translate-y-full after:hover:translate-y-0  [&_p]:transition-all hover:scale-[1.02]">
       <Image
         src={img}
         alt="Men's Clothing"

@@ -10,7 +10,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import AddToFavButton from "./AddToFavButton";
 
-const ShoppingCard = ({ id, title, price, img, item, rate, brand }) => {
+const ShoppingCard = ({ id, title, price, img, item, rate, brand, fadeUp }) => {
   const [favoriteIds, setFavoriteIds] = useState([]);
   const { addMyItem, user } = useContext(MyCartItems);
 
@@ -31,7 +31,7 @@ const ShoppingCard = ({ id, title, price, img, item, rate, brand }) => {
   }, [user]);
 
   return (
-    <StyledWrapper>
+    <StyledWrapper data-aos={fadeUp}>
       <div className="shop-card shadow-md shadow-[#777] bg-[#ffffff] card relative grow  w-[175px] basis-[200px]  flex flex-col justify-between md:basis-[300px] md:w-[275px] ">
         <AddToFavButton item={item} />
         <Image

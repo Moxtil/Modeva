@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import EmptyCartAnimation from "../components/EmptyCartAnimation";
 import addToCartImg from "../assets/undraw_empty-cart_574u.svg";
 import { IoIosStar } from "react-icons/io";
+import LoadWrapper from "../context/HomeWrapper";
 
 export default function page() {
   const { items, loadItems, setUser, deleteItem, total, user } =
@@ -24,10 +25,8 @@ export default function page() {
     return () => unsub();
   }, []);
 
-  if (!user) {
-    return <div className="loader"></div>;
-  } else
-    return (
+  return (
+    <LoadWrapper>
       <main className="p-4">
         <h1
           className="text-2xl text-[#222] px-6 flex items-center gap-2"
@@ -144,5 +143,6 @@ export default function page() {
           </section>
         )}
       </main>
-    );
+    </LoadWrapper>
+  );
 }

@@ -28,6 +28,8 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import LogoutButton from "../components/LogoutButton";
 import { doc, getDoc } from "firebase/firestore";
+import HomeWrapper from "../context/HomeWrapper";
+import LoadWrapper from "../context/HomeWrapper";
 
 export default function page() {
   const [address, setAddress] = useState("");
@@ -105,12 +107,8 @@ export default function page() {
     }
   };
 
-  if (!user) {
-    setTimeout(() => {
-      return <div className="loader"></div>;
-    }, 100);
-  } else
-    return (
+  return (
+    <LoadWrapper>
       <main className="w-full p-4">
         <header className="w-full p-3 border-2 border-yellow-800 shadow-md shadow-[#333] flex items-center gap-5  flex-col md:flex-row">
           <div className="flex items-center gap-5 md:gap-0 mx-2 flex-col md:flex-row ">
@@ -275,5 +273,6 @@ export default function page() {
         </section>
         {/*  */}
       </main>
-    );
+    </LoadWrapper>
+  );
 }

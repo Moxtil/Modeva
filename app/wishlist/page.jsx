@@ -11,6 +11,7 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import wishlistImg from "../assets/undraw_wishlist_0k5w.svg";
 import PayButton from "../components/PayButton";
+import LoadWrapper from "../context/HomeWrapper";
 export default function page() {
   const { toggleFavorite, user } = useContext(MyCartItems);
   const [favoriteItems, setFavoriteItems] = useState([]);
@@ -30,10 +31,9 @@ export default function page() {
       loadFavorites(user);
     }
   }, [user]);
-  if (!user) {
-    return <div className="loader"></div>;
-  } else
-    return (
+
+  return (
+    <LoadWrapper>
       <main onClick={() => console.log(favoriteItems)} className="px-2 py-2">
         <header>
           <h2 className="flex items-center gap-1 text-2xl">
@@ -64,9 +64,10 @@ export default function page() {
           {favoriteItems.map((item) => {
             return (
               <div
-                className="fav-item overflow-hidden hover:scale-[1.05] transition-all duration-200
-                 w-full relative bg-gray-50  p-3 flex flex-col gap-1 rounded-xl shadow-md shadow-[#333]"
+                className="fav-item overflow-hidden transition-all duration-200
+              w-full relative bg-gray-50  p-3 flex flex-col gap-1 rounded-xl shadow-md shadow-[#333]"
                 key={item.id}
+                data-aos="fade-up"
               >
                 <div
                   className="absolute  top-2 right-2 hover:bg-[#eee]  transition-all duration-300 rounded-full p-1"
@@ -118,5 +119,6 @@ export default function page() {
           })}
         </section>
       </main>
-    );
+    </LoadWrapper>
+  );
 }

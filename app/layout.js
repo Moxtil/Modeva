@@ -5,7 +5,7 @@ import AuthProvider from "./context/AuthContext";
 import CartContext from "./context/CartContext";
 import RoutingContext from "./context/RoutingContext";
 import Footer from "./components/Footer";
-import HomeWrapper from "./context/HomeWrapper";
+import AOSProvider from "./context/AOS";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -24,11 +24,11 @@ export default function RootLayout({ children }) {
         <RoutingContext>
           <CartContext>
             <AuthProvider>
-              <Navbar />
-              <div>
-                <HomeWrapper>{children}</HomeWrapper>
-              </div>
-              <Footer />
+              <AOSProvider>
+                <Navbar />
+                <div>{children}</div>
+                <Footer />
+              </AOSProvider>
             </AuthProvider>
           </CartContext>
         </RoutingContext>
