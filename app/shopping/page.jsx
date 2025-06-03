@@ -4,11 +4,20 @@ import ShoppingCard from "../components/ShoppingCard";
 import LoadWrapper from "../context/HomeWrapper";
 export default function page() {
   const [data, setData] = useState([]);
-  const [itemsCount, setItemsCount] = useState(30);
+  const [itemsCount, setItemsCount] = useState(50);
   const [fetchUrl, setFetchUrl] = useState(
     `https://dummyjson.com/products?limit=${itemsCount}`
   );
 
+  const loadItems = () => {
+    if (itemsCount <= 90) {
+      setItemsCount(itemsCount + 20);
+    }
+    setFetchUrl(`https://dummyjson.com/products?limit=${itemsCount}`);
+  };
+  useEffect(() => {
+    loadItems();
+  }, [itemsCount]);
   useEffect(() => {
     const getData = async () => {
       const req = await fetch(fetchUrl);
@@ -43,15 +52,11 @@ export default function page() {
         </section>
         <div className="w-full flex items-center justify-center my-4">
           <button
-            className={`text-center bg-[#8B4513] text-white px-4 py-2 shadow-sm shadow-[#333] hover:scale-[1.05] transition-all duration-200 ${
-              itemsCount == 100 ? "hidden" : "cursor-pointer"
-            }`}
-            onClick={() => {
-              if (itemsCount <= 90) {
-                setItemsCount(itemsCount + 10);
-              }
-              setFetchUrl(`https://dummyjson.com/products?limit=${itemsCount}`);
-            }}
+            className={`text-center bg-[#8B4513] text-white px-4 py-2 shadow-sm shadow-[#333] hover:scale-[1.05] transition-all duration-200  ${
+              itemsCount >= 204 ? "hidden" : "cursor-pointer"
+            }
+`}
+            onClick={() => setItemsCount(itemsCount + 10)}
           >
             Load More Products
           </button>

@@ -60,9 +60,9 @@ export default function page() {
         ) : (
           <section className="flex justify-between flex-col md:flex-row">
             <div className="w-full md:w-2/3 ">
-              {items.map((item) => {
+              {items.map((item, id) => {
                 return (
-                  <section key={item.product.id}>
+                  <section key={id}>
                     <div className="shadow-sm shadow-[#333] flex justify-between items-center gap-4 m-3  bg-[#ffffff] p-4">
                       <div className="flex gap-5">
                         <Link

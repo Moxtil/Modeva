@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CiMenuBurger, CiMenuFries } from "react-icons/ci";
@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { FaHeart, FaUser, FaShoppingCart, FaSearch } from "react-icons/fa";
 import SearchField from "./Searchfield";
 import { useAuth } from "../context/AuthContext";
+import { MyCartItems } from "../context/CartContext";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Shopping", href: "/shopping" },
@@ -15,8 +16,7 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user } = useAuth();
-
+  const { items } = useContext(MyCartItems);
   const path = usePathname();
 
   return (
@@ -43,8 +43,13 @@ export default function Navbar() {
           ))}
         </nav>
         <div className=" items-center gap-4 hidden md:flex">
-          <Link href={"/cart"}>
+          <Link href={"/cart"} className="relative">
             <FaShoppingCart size={20} />
+            {items.length > 0 && (
+              <div className="absolute -top-[12px] text-xs left-3 rounded-full border-2 border-[#333] text-white px-1.5 bg-amber-500">
+                {items.length}
+              </div>
+            )}
           </Link>
           <Link href={"/wishlist"}>
             <FaHeart size={20} />
