@@ -10,6 +10,17 @@ export default function ItemImages({ item }) {
       <div className="absolute right-2  top-4  cursor-pointer bg-white">
         <AddToFavButton item={item} />
       </div>
+      <div
+        className={`hidden sm:block absolute w-auto p-1 -translate-y-0.5 text-center ${
+          item.availabilityStatus === "Out of Stock"
+            ? "bg-red-500"
+            : "bg-green-500"
+        } font-semibold text-sm text-white top-[16px] rounded-sm left-2`}
+      >
+        {item.availabilityStatus === "Out of Stock"
+          ? "Out Of Stock !"
+          : "Available Now"}
+      </div>
       <Image
         src={mainImg}
         alt={item.title}

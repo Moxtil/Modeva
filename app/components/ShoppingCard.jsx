@@ -51,9 +51,9 @@ const ShoppingCard = ({
         } `}
       >
         <div
-          className={`absolute w-auto p-1 -translate-y-0.5 text-center ${
+          className={`hidden sm:block absolute w-auto p-1 -translate-y-0.5 text-center ${
             stock === "Out of Stock" ? "bg-red-500" : "bg-green-500"
-          } font-semibold text-sm text-white top-[18px] rounded-sm right-2`}
+          } font-semibold text-sm text-white top-[16px] rounded-sm right-1`}
         >
           {stock === "Out of Stock" ? "Out Of Stock !" : "Available Now"}
         </div>
@@ -70,11 +70,11 @@ const ShoppingCard = ({
             {title}
           </p>
           <p className="text-body text-xs text-[#727272]">{brand}</p>
-          <div className="text-title flex justify-between items-start flex-col gap-3 w-full">
+          <div className="text-title flex justify-between items-start flex-col gap-3 overflow-hidden">
             <span>${price}</span>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 flex-wrap sm:flex-nowrap">
               <RatingStars rating={rate} />
-              <span className="text-yellow-400 text-[17px]"> {rate}</span>
+              <span className="text-yellow-400"> {rate}</span>
             </div>
           </div>
         </div>
