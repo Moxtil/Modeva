@@ -96,7 +96,7 @@ const ShoppingCard = ({
                 });
               }}
             >
-              <FiShoppingCart size={17} className="p-[2px]" />
+              <FiShoppingCart size={17} className="p-[2px] addBtn" />
             </div>
           )}
 
@@ -136,7 +136,7 @@ const StyledWrapper = styled.div`
     padding-top: 10%;
   }
 
-  svg {
+  .addBtn {
     width: 20px;
     height: 20px;
   }
