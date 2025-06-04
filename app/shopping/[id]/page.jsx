@@ -1,8 +1,8 @@
 import AddButton from "@/app/components/AddButton";
-import AddToFavButton from "@/app/components/AddToFavButton";
 import ItemImages from "@/app/components/ItemImages";
+import RatingStars from "@/app/components/RatingStars";
+import ReminderBtn from "@/app/components/ReminderBtn";
 import ShoppingCard from "@/app/components/ShoppingCard";
-import Image from "next/image";
 import React, { Suspense } from "react";
 import { IoStarSharp } from "react-icons/io5";
 
@@ -55,12 +55,16 @@ export default async function page({ params }) {
             <h1 className="text-[16px] font-bold">
               {item?.warrantyInformation}
             </h1>
-            <p className="text-xl font-bold text-[gold] flex items-center gap-1">
-              <IoStarSharp color="gold" size={22} />
-              <span> {item.rating}</span>
-            </p>
+            <div className="flex items-center gap-1 text-[15px] text-yellow-400 font-semibold">
+              <RatingStars rating={item.rating} />
+              <h3>{item.rating}</h3>
+            </div>
             <h2 className="text-red-600 font-semibold ">${item.price}</h2>
-            <AddButton item={item} />
+            {item.availabilityStatus === "In Stock" ? (
+              <AddButton item={item} />
+            ) : (
+              <ReminderBtn />
+            )}
             {/* <div></div> */}
           </div>
         </section>
@@ -81,6 +85,7 @@ export default async function page({ params }) {
                 item={item}
                 rate={item.rating}
                 brand={item?.brand || "No Brand"}
+                stock={item.availabilityStatus}
               />
             );
           })}

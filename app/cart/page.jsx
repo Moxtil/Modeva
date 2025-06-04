@@ -13,6 +13,7 @@ import EmptyCartAnimation from "../components/EmptyCartAnimation";
 import addToCartImg from "../assets/undraw_empty-cart_574u.svg";
 import { IoIosStar } from "react-icons/io";
 import LoadWrapper from "../context/HomeWrapper";
+import RatingStars from "../components/RatingStars";
 
 export default function page() {
   const { items, loadItems, setUser, deleteItem, total, user } =
@@ -83,10 +84,14 @@ export default function page() {
                           <h2 className="text-red-600 font-semibold ">
                             ${item.product.price}
                           </h2>
-                          <h2 className="font-bold flex items-center gap-2">
+                          {/* <h2 className="font-bold flex items-center gap-2">
                             <IoIosStar size={20} color="gold" />
                             <span>{item.product.rating}</span>
-                          </h2>
+                          </h2> */}
+                          <div className="flex items-center gap-1 text-[15px] text-yellow-400 font-semibold">
+                            <RatingStars rating={item.product.rating} />
+                            <h3>{item.product.rating}</h3>
+                          </div>
                         </div>
                       </div>
                       <FaRegTrashAlt

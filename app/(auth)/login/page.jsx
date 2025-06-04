@@ -1,7 +1,7 @@
 import React from "react";
-import LoginForm from "../components/LoginForm";
+import LoginForm from "@/app/components/LoginForm";
 import Image from "next/image";
-import loginImg from "../assets/login.png";
+import loginImg from "../../assets/login.png";
 export default function page() {
   return (
     <main className="flex flex-col md:flex-row justify-between items-start gap-6 p-5 overflow-hidden ">

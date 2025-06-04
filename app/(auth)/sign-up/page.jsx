@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import signupImg from "../assets/signup.png";
-import SignupForm from "../components/SignupForm";
+import signupImg from "../../assets/signup.png";
+import SignupForm from "../../components/SignupForm";
 export default function page() {
   return (
     <main className="flex flex-col-reverse md:flex-row justify-between items-start gap-6 p-5 overflow-hidden ">

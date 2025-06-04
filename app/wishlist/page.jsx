@@ -12,6 +12,7 @@ import { FaStar } from "react-icons/fa";
 import wishlistImg from "../assets/undraw_wishlist_0k5w.svg";
 import PayButton from "../components/PayButton";
 import LoadWrapper from "../context/HomeWrapper";
+import RatingStars from "../components/RatingStars";
 export default function page() {
   const { toggleFavorite, user } = useContext(MyCartItems);
   const [favoriteItems, setFavoriteItems] = useState([]);
@@ -99,18 +100,22 @@ export default function page() {
                 </Link>
                 <div className="flex flex-col gap-3 p-1 justify-between ">
                   <div className="flex justify-between items-center gap-2 overflow-hidden">
+                    <p className="text-[#757575] text-[12px] truncate">
+                      {item.category}
+                    </p>
+                    {/* <h2 className="text-yellow-400 flex items-center gap-1 font-semibold">
+                      <FaStar size={17} color="gold" />
+                      <span>{item.rating}</span>
+                    </h2> */}
+                    <div className="flex items-center gap-1 text-[15px] text-yellow-400 font-semibold">
+                      <RatingStars rating={item.rating} />
+                      <h3>{item.rating}</h3>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center gap-2">
                     <h2 className="text-sm font-semibold  truncate">
                       {item.title}
                     </h2>
-                    <h2 className="text-yellow-400 flex items-center gap-1 font-semibold">
-                      <FaStar size={17} color="gold" />
-                      <span>{item.rating}</span>
-                    </h2>
-                  </div>
-                  <div className="flex justify-between items-center gap-2">
-                    <p className="text-[#757575] text-[12px]">
-                      {item.category}
-                    </p>
                     <h2 className="font-bold text-[16px]">${item.price}</h2>
                   </div>
                 </div>
