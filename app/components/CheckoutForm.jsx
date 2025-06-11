@@ -180,7 +180,7 @@ export default function ContactForm() {
           Continue to Shipping
         </button>
         <h2 className="text-xl translate-y-2 font-semibold text-[#222] mb-6">
-          Total : ${total}
+          Total : ${total.toFixed(2)}
         </h2>
       </div>
     </div>

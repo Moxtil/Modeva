@@ -116,7 +116,9 @@ export default function page() {
                     <h2 className="text-sm font-semibold  truncate">
                       {item.title}
                     </h2>
-                    <h2 className="font-bold text-[16px]">${item.price}</h2>
+                    <h2 className="font-bold text-[16px]">
+                      ${item.price.toFixed(2)}
+                    </h2>
                   </div>
                 </div>
               </div>

@@ -40,7 +40,7 @@ export default function page() {
                 <ShoppingCard
                   key={item.id}
                   title={item?.title}
-                  price={item?.price}
+                  price={item?.price.toFixed(2)}
                   img={item?.images[0]}
                   id={item.id}
                   item={item}

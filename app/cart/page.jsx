@@ -82,7 +82,7 @@ export default function page() {
                             {item.product.title}
                           </h2>
                           <h2 className="text-red-600 font-semibold ">
-                            ${item.product.price}
+                            ${item.product.price.toFixed(2)}
                           </h2>
                           {/* <h2 className="font-bold flex items-center gap-2">
                             <IoIosStar size={20} color="gold" />
@@ -140,7 +140,7 @@ export default function page() {
               </div>
               <div className="flex justify-between items-center p-2 font-semibold">
                 <h2 className="text-lg">Total : </h2>
-                <p className="text-lg">${total}</p>
+                <p className="text-lg">${total.toFixed(2)}</p>
               </div>
 
               <PayButton title={"PROCEED TO CHECKOUT"} link={`/checkout`} />

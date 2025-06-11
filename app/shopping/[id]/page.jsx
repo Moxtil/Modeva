@@ -59,7 +59,9 @@ export default async function page({ params }) {
               <RatingStars rating={item.rating} />
               <h3>{item.rating}</h3>
             </div>
-            <h2 className="text-red-600 font-semibold ">${item.price}</h2>
+            <h2 className="text-red-600 font-semibold ">
+              ${item.price.toFixed(2)}
+            </h2>
             {item.availabilityStatus === "In Stock" ? (
               <AddButton item={item} />
             ) : (
