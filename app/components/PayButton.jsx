@@ -1,16 +1,57 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { MyCartItems } from "../context/CartContext";
+import { db } from "../firebase/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
+import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
 
-const PayButton = ({ title, link }) => {
+const PayButton = () => {
+  const router = useRouter();
+  const { user } = useAuth();
+  const checkAddress = async () => {
+    const docRef = doc(db, "users", user.email);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists() && docSnap.data().address) {
+      handleClick();
+    } else {
+      router.push("/account/address");
+    }
+  };
+  const { total } = useContext(MyCartItems);
+
+  const handleClick = async () => {
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      body: JSON.stringify({
+        items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: { name: "Taxi Cost" },
+              unit_amount: total * 100, // $20.00
+            },
+            quantity: 1,
+          },
+        ],
+      }),
+    });
+
+    const data = await res.json();
+    window.location.href = data.url;
+  };
+
   return (
     <StyledWrapper className="hover:text-white">
-      <Link
+      <button
+        onClick={checkAddress}
         className="btn hover:text-white text-[10px] md:text-[15px]"
-        href={link}
       >
-        {title}
-      </Link>
+        PROCEED TO CHECKOUT
+      </button>
     </StyledWrapper>
   );
 };

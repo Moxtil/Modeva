@@ -10,9 +10,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import wishlistImg from "../assets/undraw_wishlist_0k5w.svg";
-import PayButton from "../components/PayButton";
 import LoadWrapper from "../context/HomeWrapper";
 import RatingStars from "../components/RatingStars";
+import { FiShoppingBag } from "react-icons/fi";
 export default function page() {
   const { toggleFavorite, user } = useContext(MyCartItems);
   const [favoriteItems, setFavoriteItems] = useState([]);
@@ -56,7 +56,12 @@ export default function page() {
                 <h2 className="text-lg text-yellow-800">
                   Looks like you haven't added anything yet!
                 </h2>
-                <PayButton title={"Go Shopping"} link={`/shopping`} />
+                <Link
+                  href={"/shopping"}
+                  className="flex items-center justify-center gap-2 bg-amber-900 px-5 py-2 text-white my-2 shadow-sm shadow-amber-800 text-lg"
+                >
+                  Go shopping <FiShoppingBag />
+                </Link>
               </div>
             </div>
           )}

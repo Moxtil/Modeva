@@ -11,7 +11,6 @@ import PayButton from "../components/PayButton";
 import Swal from "sweetalert2";
 import EmptyCartAnimation from "../components/EmptyCartAnimation";
 import addToCartImg from "../assets/undraw_empty-cart_574u.svg";
-import { IoIosStar } from "react-icons/io";
 import LoadWrapper from "../context/HomeWrapper";
 import RatingStars from "../components/RatingStars";
 
@@ -143,7 +142,7 @@ export default function page() {
                 <p className="text-lg">${total.toFixed(2)}</p>
               </div>
 
-              <PayButton title={"PROCEED TO CHECKOUT"} link={`/checkout`} />
+              <PayButton />
             </div>
           </section>
         )}
