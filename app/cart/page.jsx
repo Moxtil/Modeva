@@ -2,7 +2,7 @@
 import { onAuthStateChanged } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";
-import { auth } from "../firebase/firebaseConfig";
+import { auth, db } from "../firebase/firebaseConfig";
 import { MyCartItems } from "../context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,15 +13,31 @@ import EmptyCartAnimation from "../components/EmptyCartAnimation";
 import addToCartImg from "../assets/undraw_empty-cart_574u.svg";
 import LoadWrapper from "../context/HomeWrapper";
 import RatingStars from "../components/RatingStars";
+import { doc, getDoc } from "firebase/firestore";
 
 export default function page() {
   const { items, loadItems, setUser, deleteItem, total, user } =
     useContext(MyCartItems);
+
+  const [address, setAddress] = useState("");
+
+  const checkAddress = async () => {
+    const docRef = doc(db, "users", user?.email);
+    const docSnap = await getDoc(docRef);
+
+    setAddress(docSnap.data().address);
+  };
+  useEffect(() => {
+    if (user?.email) {
+      checkAddress();
+    }
+  }, [user]);
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       setUser(user);
       if (user) loadItems(user.email);
     });
+
     return () => unsub();
   }, []);
 
@@ -136,6 +152,31 @@ export default function page() {
               <div className="flex justify-between items-center p-2 font-[400] text-[#757575]">
                 <h2>Shipping Fee : </h2>
                 <p>$0.00</p>
+              </div>
+              <div className="flex justify-between items-center p-2">
+                <h2 className="text-[17px] font-semibold">
+                  Shipping Address :
+                </h2>
+                <div className="text-[17px]">
+                  {address === "" ? (
+                    <div className="flex items-center gap-1">
+                      <h2 className="text-red-500">Address Missing!</h2>
+                      <Link className="underline" href={"/account/address"}>
+                        Update Now
+                      </Link>
+                    </div>
+                  ) : (
+                    <p className="text-[14px]">{address.fullAddress}</p>
+                  )}
+                </div>
+              </div>
+              <div>
+                <Link
+                  href={"/account/address"}
+                  className="font-semibold text-[16px] ml-2 underline text-[#727272]"
+                >
+                  Change My Address
+                </Link>
               </div>
               <div className="flex justify-between items-center p-2 font-semibold">
                 <h2 className="text-lg">Total : </h2>

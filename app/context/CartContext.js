@@ -11,6 +11,7 @@ import {
   query,
   orderBy,
   where,
+  getDoc,
 } from "firebase/firestore";
 
 export const MyCartItems = createContext();
@@ -92,6 +93,7 @@ export default function CartContext({ children }) {
     setItem({});
     loadItems(user.email);
   };
+
   const deleteItem = async (itemId) => {
     if (!user) return;
 

@@ -31,8 +31,8 @@ const PayButton = () => {
           {
             price_data: {
               currency: "usd",
-              product_data: { name: "Taxi Cost" },
-              unit_amount: total * 100, // $20.00
+              product_data: { name: "Cart Total" },
+              unit_amount: total * 100,
             },
             quantity: 1,
           },
