@@ -1,25 +1,92 @@
 import Image from "next/image";
 import React from "react";
 
-const ShopCardThree = ({ img, desc, rate, category, price }) => {
+const ShopCardThree = ({ img, category, price }) => {
   return (
-    <div className="grow-1 basis-[300px] max-w-[500px] h-full m-2 group p-2 bg-white/10 rounded-lg flex flex-col items-center justify-center gap-2 relative after:absolute after:h-full after:bg-[#abd373] z-20 shadow-lg after:-z-20 after:w-full after:inset-0 after:rounded-lg transition-all duration-300 hover:transition-all hover:duration-300 after:transition-all after:duration-500 after:hover:transition-all after:hover:duration-500 overflow-hidden cursor-pointer after:-translate-y-full after:hover:translate-y-0  [&_p]:transition-all hover:scale-[1.02]">
+    <div className="group block">
       <Image
         src={img}
-        alt="Men's Clothing"
+        alt={category}
         width={300}
         height={200}
-        className="w-full h-full object-cover"
+        className="h-[350px] w-full max-w-[350px] object-cover sm:h-[450px]"
       />
-      <p className="p-1 font-semibold text-orange-300 tracking-wider text-xl">
-        {category}
-      </p>
-      <p className="blueberry font-semibold text-gray-400 text-xs ">{desc}</p>
-      <div className=" flex flex-row justify-between items-center w-full">
-        <p className=" text-orange-300 font-semibold">${price}</p>
-        <p className=" lg:inline-flex items-center gap-3  text-white bg-orange-300 shadow-[10px_10px_150px_#ff9f0d] py-2 px-4 text-sm font-semibold rounded-sm ">
-          ★ {rate}
-        </p>
+
+      <div className="mt-1.5">
+        <p className="text-xs text-gray-500">Colors</p>
+
+        <div className="mt-1.5 flex gap-1">
+          <form>
+            <fieldset>
+              <legend className="sr-only">Color</legend>
+            </fieldset>
+
+            <div className="flex flex-wrap justify-center gap-1 [&:hover_label]:opacity-75">
+              <div>
+                <input type="checkbox" id="ColorSg" className="sr-only" />
+
+                <label
+                  htmlFor="ColorSg"
+                  className="block size-4 cursor-pointer rounded-full bg-[#595759] transition hover:!opacity-100"
+                >
+                  <span className="sr-only"> Space Gray </span>
+                </label>
+              </div>
+
+              <div>
+                <input type="checkbox" id="ColorS" className="sr-only" />
+
+                <label
+                  htmlFor="ColorS"
+                  className="block size-4 cursor-pointer rounded-full bg-[#d2d3d4] transition hover:!opacity-100"
+                >
+                  <span className="sr-only"> Silver </span>
+                </label>
+              </div>
+
+              <div>
+                <input type="checkbox" id="ColorP" className="sr-only" />
+
+                <label
+                  htmlFor="ColorP"
+                  className="block size-4 cursor-pointer rounded-full bg-[#d89f97] transition hover:!opacity-100"
+                >
+                  <span className="sr-only"> Pink </span>
+                </label>
+              </div>
+
+              <div>
+                <input type="checkbox" id="ColorG" className="sr-only" />
+
+                <label
+                  htmlFor="ColorG"
+                  className="block size-4 cursor-pointer rounded-full bg-[#afbfab] transition hover:!opacity-100"
+                >
+                  <span className="sr-only"> Pink </span>
+                </label>
+              </div>
+
+              <div>
+                <input type="checkbox" id="ColorSb" className="sr-only" />
+
+                <label
+                  htmlFor="ColorSb"
+                  className="block size-4 cursor-pointer rounded-full bg-[#91a5bb] transition hover:!opacity-100"
+                >
+                  <span className="sr-only"> Pink </span>
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div className="mt-3 flex justify-between text-sm">
+          <h3 className="text-gray-900 group-hover:underline group-hover:underline-offset-4">
+            {category}
+          </h3>
+
+          <p className="text-gray-900 font-semibold">${price}</p>
+        </div>
       </div>
     </div>
   );

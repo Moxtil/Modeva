@@ -129,7 +129,7 @@ export default function Home() {
           <h1 className="text-3xl text-[#222] text-center">
             Where timeless style meets timeless beauty.
           </h1>
-          <div className="flex justify-center items-center gap-4 p-2 flex-wrap">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-2">
             <ShopCardTwo
               img={womenImg1}
               rate={"4.2"}
