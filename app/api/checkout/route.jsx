@@ -11,10 +11,9 @@ export async function POST(req) {
     payment_method_types: ["card"],
     mode: "payment",
     line_items: items,
-    success_url: `/api/success`,
-    cancel_url: `/api/cancel`,
+    success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/success`,
+    cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/cancel`,
   });
 
   return Response.json({ url: session.url });
 }
-// ${process.env.NEXT_PUBLIC_BASE_URL}

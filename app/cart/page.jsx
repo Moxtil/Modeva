@@ -25,7 +25,9 @@ export default function page() {
     const docRef = doc(db, "users", user?.email);
     const docSnap = await getDoc(docRef);
 
-    setAddress(docSnap.data().address);
+    {
+      docSnap.data().address && setAddress(docSnap.data().address);
+    }
   };
   useEffect(() => {
     if (user?.email) {
@@ -170,14 +172,16 @@ export default function page() {
                   )}
                 </div>
               </div>
-              <div>
-                <Link
-                  href={"/account/address"}
-                  className="font-semibold text-[16px] ml-2 underline text-[#727272]"
-                >
-                  Change My Address
-                </Link>
-              </div>
+              {address !== "" && (
+                <div>
+                  <Link
+                    href={"/account/address"}
+                    className="font-semibold text-[16px] ml-2 underline text-[#727272]"
+                  >
+                    Change My Address
+                  </Link>
+                </div>
+              )}
               <div className="flex justify-between items-center p-2 font-semibold">
                 <h2 className="text-lg">Total : </h2>
                 <p className="text-lg">${total.toFixed(2)}</p>
