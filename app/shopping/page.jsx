@@ -48,6 +48,7 @@ export default function page() {
                   brand={item?.brand || "No Brand"}
                   fadeUp={"fade-up"}
                   stock={item.availabilityStatus}
+                  desc={item.description}
                 />
               );
             })}
