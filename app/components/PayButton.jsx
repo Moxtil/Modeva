@@ -47,7 +47,7 @@ const PayButton = () => {
   return (
     <StyledWrapper className="hover:text-white">
       <button
-        onClick={checkAddress}
+        onClick={() => checkAddress()}
         className="btn hover:text-white text-[10px] md:text-[15px]"
       >
         PROCEED TO CHECKOUT
