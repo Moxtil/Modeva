@@ -20,12 +20,12 @@ export default function page() {
   }, [itemsCount]);
   useEffect(() => {
     const getData = async () => {
-      const req = await fetch(fetchUrl);
+      const req = await fetch(`https://dummyjson.com/products?limit=0`);
       const result = await req.json();
       setData(result.products);
     };
     getData();
-  }, [itemsCount]);
+  }, []);
 
   return (
     <LoadWrapper>
