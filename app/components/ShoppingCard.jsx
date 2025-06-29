@@ -75,7 +75,7 @@ const ShoppingCard = ({
             <span>${price}</span>
             <div className="flex items-center gap-1 flex-wrap sm:flex-nowrap">
               <RatingStars rating={rate} />
-              <span className="text-yellow-400"> {rate}</span>
+              <span className="text-yellow-400 md:block hidden"> {rate}</span>
             </div>
           </div>
         </div>

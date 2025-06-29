@@ -4,6 +4,7 @@ import { MyCartItems } from "../context/CartContext";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/firebase/firebaseConfig";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import LikedBtn from "./LikedBtn";
 
 export default function AddToFavButton({ item, size }) {
   const [favoriteIds, setFavoriteIds] = useState([item.id]);
@@ -16,13 +17,12 @@ export default function AddToFavButton({ item, size }) {
     const snapshot = await getDocs(favRef);
 
     const ids = snapshot.docs.map((doc) => doc.data().product.id);
-    console.log(ids);
 
     setFavoriteIds(ids);
   };
   useEffect(() => {
     loadFavorites(user);
-  }, [favoriteIds]);
+  }, []);
   const isFavorite = favoriteIds.includes(item.id);
   return (
     <div
@@ -35,7 +35,8 @@ export default function AddToFavButton({ item, size }) {
       {isFavorite ? (
         <FaHeart color="red" cursor={"pointer"} size={size || 30} />
       ) : (
-        <FaRegHeart cursor={"pointer"} size={size || 30} />
+        // <FaRegHeart cursor={"pointer"} size={size || 30} />
+        <LikedBtn />
       )}
     </div>
   );

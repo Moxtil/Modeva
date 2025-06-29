@@ -21,7 +21,7 @@ export default function CartContext({ children }) {
   const [total, setTotal] = useState(0);
   const [favoriteItems, setFavoriteItems] = useState([]);
 
-  // ✅ تحميل العناصر المفضلة للمستخدم
+  // Load favorite items for the user
   const loadFavorites = async (user) => {
     if (!user) return;
     const favRef = collection(db, "users", user.email, "favorite-items");
@@ -30,7 +30,7 @@ export default function CartContext({ children }) {
     setFavoriteItems(items);
   };
 
-  // ✅ تحميل عناصر السلة الخاصة بالمستخدم
+  // Load cart items for the user
   const loadItems = async (email) => {
     const ref = collection(db, "users", email, "cart-items");
     const q = query(ref, orderBy("createdAt", "desc"));
@@ -42,7 +42,7 @@ export default function CartContext({ children }) {
     setItems(data);
   };
 
-  // ✅ حساب المجموع الكلي مباشرة من العناصر
+  // Calculate total whenever items change
   useEffect(() => {
     const total = items.reduce((acc, item) => {
       const price = item.product?.price || 0;
@@ -52,12 +52,12 @@ export default function CartContext({ children }) {
     setTotal(total);
   }, [items]);
 
-  // ✅ تحميل المفضلات عند تغيّر المستخدم
+  // Load favorites whenever user changes
   useEffect(() => {
     if (user) loadFavorites(user);
-  }, [user]);
+  }, []);
 
-  // ✅ تتبع تسجيل دخول المستخدم
+  // Listen for auth state changes once
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -66,26 +66,29 @@ export default function CartContext({ children }) {
     return () => unsub();
   }, []);
 
-  // ✅ إضافة عنصر جديد إلى السلة
   const addMyItem = async (myItem) => {
     if (!myItem || !user) return;
     const ref = collection(db, "users", user.email, "cart-items");
-    await addDoc(ref, {
+    const docRef = await addDoc(ref, {
       product: myItem,
       createdAt: new Date(),
     });
-    loadItems(user.email); // أو حدّث setItems يدويًا لتقليل الاستعلامات
+
+    setItems((prev) => [
+      { id: docRef.id, product: myItem, createdAt: new Date() },
+      ...prev,
+    ]);
   };
 
-  // ✅ حذف عنصر من السلة
   const deleteItem = async (itemId) => {
     if (!user) return;
     const itemRef = doc(db, "users", user.email, "cart-items", itemId);
     await deleteDoc(itemRef);
-    loadItems(user.email);
+
+    setItems((prev) => prev.filter((item) => item.id !== itemId));
   };
 
-  // ✅ إضافة أو إزالة من المفضلة
+  // Add or remove from favorites
   const toggleFavorite = async (user, item) => {
     if (!user || !item) return;
     const favRef = collection(db, "users", user.email, "favorite-items");
@@ -103,7 +106,7 @@ export default function CartContext({ children }) {
           createdAt: new Date(),
         });
       }
-      loadFavorites(user); // إعادة تحميل المفضلة بعد التعديل
+      loadFavorites(user); // Reload favorites after toggle
     } catch (error) {
       console.error("Error toggling favorite item:", error);
     }
