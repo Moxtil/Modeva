@@ -104,10 +104,7 @@ export default function page() {
         </section>
 
         {/* Products */}
-        <section
-          className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 w-full my-4"
-          data-aos="fade-up"
-        >
+        <section className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 w-full my-4">
           <Suspense fallback={<div className="loader"></div>}>
             {filteredData?.map((item) => (
               <ShoppingCard
