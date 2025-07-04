@@ -3,10 +3,10 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "./AuthContext";
 
-export default function LoadWrapper({ children }) {
+export default function LoadWrapper({ children, loading }) {
   const { user } = useAuth();
 
-  if (!user) {
+  if (!user || loading) {
     return (
       <div className="text-black font-semibold text-4xl text-center my-[50px]">
         <span className="text-[#8B4513]">M</span>ODEVA

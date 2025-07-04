@@ -2,7 +2,7 @@ import React from "react";
 
 const Button = () => {
   return (
-    <button className="cursor-pointer group relative rounded-[4px] ml-2 my-3 bg-yellow-300 hover:bg-orange-400 text-black font-semibold text-sm px-6 py-3  transition-all duration-200 ease-in-out shadow hover:shadow-lg w-40 h-12">
+    <button className="cursor-pointer group relative rounded-[4px] ml-2 my-3 bg-yellow-500 hover:bg-yellow-700 text-black font-semibold text-sm px-6 py-3  transition-all duration-200 ease-in-out shadow hover:shadow-lg w-40 h-12">
       <div className="relative flex items-center justify-center gap-2">
         <span className="relative inline-block overflow-hidden">
           <span className="block transition-transform duration-300 group-hover:-translate-y-full">

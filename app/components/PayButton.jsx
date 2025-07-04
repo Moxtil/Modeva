@@ -41,7 +41,9 @@ const PayButton = () => {
     });
 
     const data = await res.json();
-    window.location.href = data.url;
+    console.log(data);
+    router.replace(data.url);
+    // window.location.href = data.url;
   };
 
   return (
