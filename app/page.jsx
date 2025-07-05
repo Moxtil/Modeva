@@ -14,6 +14,9 @@ import menImg1 from "./assets/men.png";
 import menImg2 from "./assets/men1.png";
 import menImg3 from "./assets/men2.png";
 import menImg4 from "./assets/men3.png";
+import newImg1 from "./assets/img1.svg";
+import newImg2 from "./assets/img2.svg";
+import newImg3 from "./assets/img3.svg";
 import { BiLike } from "react-icons/bi";
 import { IoCallOutline, IoCardOutline } from "react-icons/io5";
 import { TbTruckDelivery } from "react-icons/tb";
@@ -29,6 +32,21 @@ const prompt = Prompt({
   subsets: ["latin"],
   weight: ["600"],
 });
+
+const newImages = [
+  {
+    id: 1,
+    img: newImg1,
+  },
+  {
+    id: 2,
+    img: newImg2,
+  },
+  {
+    id: 3,
+    img: newImg3,
+  },
+];
 export default function Home() {
   return (
     <LoadWrapper>
@@ -147,6 +165,33 @@ export default function Home() {
             <Button />
           </Link>
         </section>
+        {/* {"Customer Review"} */}
+        <section className="bg-[#fefefe] py-10 px-4" data-aos="fade-up">
+          <h2 className="text-3xl text-center mb-8 text-[#222]">
+            What Our Customers Say
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              { name: "Sarah", text: "Amazing quality and fast delivery!" },
+              {
+                name: "Ahmed",
+                text: "Stylish and comfortable. Highly recommend!",
+              },
+              {
+                name: "Lina",
+                text: "Great customer support and beautiful designs.",
+              },
+            ].map((review, i) => (
+              <div key={i} className="p-6 bg-white shadow-md rounded-md">
+                <p className="text-sm text-[#555] italic">"{review.text}"</p>
+                <p className="mt-4 font-semibold text-[#8B4513]">
+                  - {review.name}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Special Offers For All*/}
         <section className="my-8 p-3" data-aos="fade-up">
           <h1 className="text-3xl text-[#222] text-center">
@@ -186,6 +231,86 @@ export default function Home() {
             <Button />
           </Link>
         </section>
+        <section className="py-10 px-4" data-aos="fade-up">
+          <h2 className="text-3xl text-center text-[#222] mb-6">
+            Style Tips & Articles
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6  mx-auto">
+            {newImages.map((i, index) => (
+              <div
+                key={i.id}
+                className="bg-white shadow-md rounded-md overflow-hidden"
+              >
+                <Image
+                  src={i.img}
+                  width={300}
+                  height={200}
+                  alt="Blog"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-bold text-[#8B4513] mb-2">
+                    How to Style Your Winter Look
+                  </h3>
+                  <p className="text-sm text-[#555]">
+                    Discover easy ways to elevate your winter wardrobe.
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section
+          className="m-6 shadow-xl bg-white py-16 px-4"
+          data-aos="fade-up"
+        >
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+              <h2 className="text-4xl font-bold text-[#8B4513]">50K+</h2>
+              <p className="text-sm text-[#555]">Happy Customers</p>
+            </div>
+            <div>
+              <h2 className="text-4xl font-bold text-[#8B4513]">1K+</h2>
+              <p className="text-sm text-[#555]">Products Sold</p>
+            </div>
+            <div>
+              <h2 className="text-4xl font-bold text-[#8B4513]">5+</h2>
+              <p className="text-sm text-[#555]">Years Experience</p>
+            </div>
+            <div>
+              <h2 className="text-4xl font-bold text-[#8B4513]">100%</h2>
+              <p className="text-sm text-[#555]">Customer Satisfaction</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-12 px-4 my-4" data-aos="fade-up">
+          <h2 className="text-3xl text-center text-[#222] mb-8">
+            Frequently Asked Questions
+          </h2>
+          <div className="max-w-3xl mx-auto space-y-6">
+            {[
+              {
+                q: "How long does delivery take?",
+                a: "Delivery usually takes 2-5 working days depending on your location.",
+              },
+              {
+                q: "Can I return a product?",
+                a: "Yes, we offer a 7-day return policy for unused items with original packaging.",
+              },
+              {
+                q: "Do you offer international shipping?",
+                a: "Currently, we only ship within the country, but international options are coming soon!",
+              },
+            ].map((faq, index) => (
+              <div key={index} className="border-b pb-4">
+                <h3 className="font-semibold text-[#8B4513]">{faq.q}</h3>
+                <p className="text-sm text-[#555] mt-2">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Services */}
         <section className="p-6" data-aos="fade-up">
           <div className="md:grid grid-cols-5 grid-rows-5 gap-4 flex flex-col">

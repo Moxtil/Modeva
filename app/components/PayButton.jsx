@@ -50,9 +50,9 @@ const PayButton = () => {
     <StyledWrapper className="hover:text-white">
       <button
         onClick={() => checkAddress()}
-        className="btn hover:text-white text-[10px] md:text-[15px]"
+        className="btn hover:text-white text-[14px] md:text-[17px]"
       >
-        PROCEED TO CHECKOUT
+        CHECKOUT
       </button>
     </StyledWrapper>
   );

@@ -122,6 +122,7 @@ const StyledWrapper = styled.div`
     padding: 8px;
     position: relative;
     overflow: visible;
+    transition: 0.3s ease all;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   }
 
@@ -129,7 +130,11 @@ const StyledWrapper = styled.div`
     height: 55%;
     width: 100%;
     border-radius: 0.5rem;
-    transition: 0.3s ease;
+    transition: 0.3s ease all;
+  }
+  .card:hover {
+    box-shadow: rgba(226, 196, 63, 0.25) 0px 17px 47px -5px,
+      rgba(180, 71, 71, 0.3) 0px 8px 16px -8px;
   }
 
   .card-info {
@@ -169,12 +174,6 @@ const StyledWrapper = styled.div`
     cursor: pointer;
     border-radius: 50px;
     transition: 0.3s ease-in-out;
-  }
-
-  /*Hover*/
-  .card-img:hover {
-    box-shadow: rgba(226, 196, 63, 0.25) 0px 13px 47px -5px,
-      rgba(180, 71, 71, 0.3) 0px 8px 16px -8px;
   }
 
   .card-button:hover {

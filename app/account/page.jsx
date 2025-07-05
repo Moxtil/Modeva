@@ -1,277 +1,271 @@
 "use client";
-import accImg from "../assets/image.png";
 import Image from "next/image";
-import { useAuth } from "../context/AuthContext";
-import { LuMessageSquareShare } from "react-icons/lu";
+import { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged, deleteUser } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../firebase/firebaseConfig";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 import {
   MdDriveFolderUpload,
   MdErrorOutline,
-  MdLogin,
   MdOutlineEmail,
-  MdOutlineLockReset,
   MdOutlineVerifiedUser,
+  MdLogin,
+  MdOutlineLockReset,
 } from "react-icons/md";
+
 import {
-  FaAddressCard,
-  FaHashtag,
-  FaLock,
-  FaRegEdit,
   FaTrash,
+  FaUserCircle,
+  FaAddressCard,
   FaUserFriends,
 } from "react-icons/fa";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { deleteUser, getAuth, onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "../firebase/firebaseConfig";
-import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
+
 import LogoutButton from "../components/LogoutButton";
-import { doc, getDoc } from "firebase/firestore";
-import HomeWrapper from "../context/HomeWrapper";
 import LoadWrapper from "../context/HomeWrapper";
+import { IoMdLogOut } from "react-icons/io";
 
-export default function page() {
-  const [address, setAddress] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user?.email) {
-        setUserEmail(user.email);
-
-        // Get the user address from the collection using their email
-        const docRef = doc(db, "users", user.email); // Reference to the document with the user's email in the "available" collection
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists() && docSnap.data().address) {
-          setAddress(docSnap.data().address); // Set the address state if it exists
-        }
-      }
-    });
-
-    return () => unsubscribe(); // Cleanup on component unmount
-  }, []);
-  const { user, logout } = useAuth();
+export default function AccountPage() {
+  const [user, setUser] = useState(null);
+  const [address, setAddress] = useState(null);
   const [confirmEmail, setConfirmEmail] = useState("");
   const router = useRouter();
 
-  const showInputPopup = async (user) => {
-    const { value: inputValue } = await Swal.fire({
-      title: "Enter Your Email To Confirm",
-      text: "You Need To Write It , Do Not Copy It ",
-      input: "text",
-      inputPlaceholder: user,
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        const docRef = doc(db, "users", currentUser.email);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) setAddress(docSnap.data().address || null);
+      } else {
+        setUser(null);
+        setAddress(null);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
+  async function showEmailConfirmPopup() {
+    const { value: inputEmail } = await Swal.fire({
+      title: "Confirm Your Email",
+      input: "email",
+      inputLabel: "Please type your email to confirm deletion",
+      inputPlaceholder: "Enter your email",
+      inputValue: user?.email || "",
       showCancelButton: true,
       confirmButtonText: "Confirm",
       cancelButtonText: "Cancel",
-      confirmButtonColor: "red",
-      inputAttributes: {
-        maxlength: 75,
-        autocapitalize: "off",
-        autocorrect: "off",
-      },
+      confirmButtonColor: "#b45309", // yellow-700 dark
     });
 
-    if (inputValue == user) {
-      setConfirmEmail(inputValue);
+    if (inputEmail === user?.email) {
+      setConfirmEmail(inputEmail);
+      return true;
     } else {
       Swal.fire({
         icon: "error",
-        title: "Oops...",
-        text: "Email Is Not Matching",
+        title: "Email mismatch",
+        text: "The email you entered does not match your account email.",
       });
+      return false;
     }
-  };
+  }
 
-  const handleDeleteAccount = async () => {
+  async function handleDeleteAccount() {
     try {
-      const user = auth.currentUser;
+      if (!user) return;
+      if (user.email !== confirmEmail) return;
 
-      if (!user) {
-        throw new Error("No user is signed in.");
-      }
-      if (user.email === confirmEmail) {
-        await deleteUser(user);
-      }
+      await deleteUser(user);
 
-      console.log("User account deleted.");
-      // redirect to home or login
+      Swal.fire({
+        icon: "success",
+        title: "Account deleted",
+        text: "Your account has been successfully deleted.",
+      });
+
+      router.push("/");
     } catch (error) {
-      console.error("Error deleting user:", error);
-
+      console.error(error);
       if (error.code === "auth/requires-recent-login") {
-        alert("Please reauthenticate and try again.");
-        // Optionally: show re-auth popup here
+        Swal.fire({
+          icon: "warning",
+          title: "Re-authentication Required",
+          text: "Please sign out and sign in again before deleting your account.",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.message || "Failed to delete account.",
+        });
       }
     }
-  };
+  }
+
+  if (!user)
+    return (
+      <LoadWrapper>
+        <p className="text-center p-6">Loading user data...</p>
+      </LoadWrapper>
+    );
 
   return (
     <LoadWrapper>
-      <main className="w-full p-4">
-        <header className="w-full p-3 border-2 border-yellow-800 shadow-md shadow-[#333] flex items-center gap-5  flex-col md:flex-row">
-          <div className="flex items-center gap-5 md:gap-0 mx-2 flex-col md:flex-row ">
-            <Image
-              onClick={() => console.log(user)}
-              src={accImg}
-              alt="user account"
-              width={75}
-              height={75}
-            />
-            <h2 className="text-lg font-semibold">{user?.displayName}</h2>
+      <main className="max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-8">
+        {/* HEADER */}
+        <section className="flex flex-col md:flex-row items-center md:items-start gap-6 border-b border-yellow-800 pb-6">
+          <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-yellow-800 shadow-md cursor-pointer hover:opacity-90 transition-opacity duration-300">
+            {user.photoURL ? (
+              <Image
+                src={user.photoURL}
+                alt="User profile picture"
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <FaUserCircle className="text-yellow-700 w-full h-full" />
+            )}
           </div>
-          <div className="flex items-center gap-3 flex-wrap justify-center">
-            <button className="cursor-pointer px-12 py-1 rounded-sm bg-transparent border-2 border-[rgb(0,90,215)] shadow-md shadow-[rgb(0,90,215)] flex items-center gap-3 text-center text-[rgb(0,90,215)]">
-              <MdDriveFolderUpload size={24} /> <span>Upload</span>
-            </button>
-            <button
-              className={`cursor-pointer px-12 py-1 rounded-sm bg-transparent border-2 border-[#888] shadow-md  flex items-center gap-3 text-center  ${
-                user?.photoURL
-                  ? "opacity-100 shadow-[rgb(255,0,0)] border-[rgb(255,0,0)]"
-                  : "opacity-75 pointer-events-none"
-              } `}
-            >
-              <FaTrash size={19} color="#222" /> <span>Remove</span>
-            </button>
-          </div>
-        </header>
-        <section className="flex justify-between flex-col md:flex-row items-start gap-5 flex-wrap md:flex-nowrap  my-7">
-          <div className="flex flex-col gap-8 items-start w-full">
-            <h3 className="grow w-full flex items-center gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
-              <FaHashtag /> <span>Username : {user?.displayName}</span>
-            </h3>
-            <h3 className="grow w-full flex items-center gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
-              <MdOutlineEmail /> Email : {user?.email}
-            </h3>
-            <h3 className="grow w-full flex items-center justify-between gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
-              <p className="flex items-center gap-1">
-                {user?.emailVerified ? (
-                  <MdOutlineVerifiedUser size={20} color="#00d900" />
-                ) : (
-                  <MdErrorOutline color="yellow" size={20} />
-                )}
-                Email Is {user?.emailVerified ? "Verified" : "Not Verified"}
-              </p>
-              {!user?.emailVerified && (
-                <Link
-                  className="underline cursor-pointer flex items-center gap-2"
-                  href={"/account/verifyEmail"}
-                >
-                  <span>
-                    <LuMessageSquareShare />
-                  </span>
-                  <span> Verify Email</span>
-                </Link>
-              )}
-            </h3>
-            <h3 className="grow w-full flex items-center gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
-              <MdLogin />
-              Last Sing In {user?.metadata.lastSignInTime}
-            </h3>
-          </div>
-          <div className="flex flex-col gap-8 items-start w-full">
-            <div className="grow w-full flex items-center justify-between gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
-              <h4 className="flex items-center gap-1">
-                <FaLock />
-                <span> Password : ******** ,</span>
-              </h4>
-              <Link
-                href={"/account/resetPassword"}
-                className="underline cursor-pointer flex items-center gap-2"
+          <div className="flex-1">
+            <h1 className="text-3xl font-semibold text-yellow-900">
+              {user.displayName || "User"}
+            </h1>
+            <p className="text-yellow-800 mt-1">{user.email}</p>
+            <p className="mt-2 text-sm text-yellow-700">
+              Member since:{" "}
+              <time
+                dateTime={new Date(user.metadata.creationTime).toISOString()}
               >
-                <MdOutlineLockReset />
-                <span> Reset Password ?</span>
-              </Link>
-            </div>
-            <div className="grow w-full flex items-center justify-between gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
-              <h4 className="flex items-center gap-1">
-                <FaAddressCard />
-                <span>
-                  Address :
-                  {address !== "" ? (
-                    <>
-                      {address.country} , {address.city} ,{address.zip} ,
-                      {address.street}
-                    </>
-                  ) : (
-                    "No Available Address"
-                  )}
-                </span>
-              </h4>
-              <Link
-                href={"/account/address"}
-                className="underline cursor-pointer flex items-center gap-2"
+                {new Date(user.metadata.creationTime).toLocaleDateString()}
+              </time>
+            </p>
+            <p className="text-sm text-yellow-700">
+              Last sign in:{" "}
+              <time
+                dateTime={new Date(user.metadata.lastSignInTime).toISOString()}
               >
-                <FaRegEdit />
-                <span> Edit Address ?</span>
-              </Link>
-            </div>
-            <h3 className="grow w-full flex items-center gap-1 bg-yellow-800 text-white shadow-md shadow-yellow-800 rounded-[3px] p-4 h-20">
-              {" "}
-              <FaUserFriends />
-              Member Since {user?.metadata.creationTime}
-            </h3>
+                {new Date(user.metadata.lastSignInTime).toLocaleString()}
+              </time>
+            </p>
           </div>
         </section>
-        <section className="flex items-start gap-5 flex-col">
-          <button
-            className="cursor-pointer w-[175px]  inline-flex items-center px-4 py-2 bg-red-600 transition ease-in-out delay-75 hover:bg-red-700 text-white text-sm font-medium rounded-md hover:-translate-y-1 hover:scale-110"
-            onClick={() => {
-              Swal.fire({
-                title: "Do You Want To Delete This Account?",
-                text: "You won't be able to revert this!",
-                icon: "error",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
-              }).then(async () => {
-                await showInputPopup(user.email);
-                setTimeout(() => {
-                  handleDeleteAccount();
-                }, 500);
-              });
-            }}
-          >
-            <svg
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="h-5 w-5 mr-2"
-              xmlns="http://www.w3.org/2000/svg"
+
+        {/* INFO CARDS */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          {/* Email Verification */}
+          <div className="flex items-center gap-4 p-5 border border-yellow-700 rounded-lg shadow-sm bg-yellow-100">
+            {user.emailVerified ? (
+              <MdOutlineVerifiedUser className="text-green-600 w-10 h-10" />
+            ) : (
+              <MdErrorOutline className="text-yellow-700 w-10 h-10" />
+            )}
+            <div>
+              <h2 className="font-semibold text-yellow-900">
+                Email Verification
+              </h2>
+              <p className="text-yellow-800">
+                Your email is{" "}
+                {user.emailVerified ? "verified " : "not verified "}
+              </p>
+              {!user.emailVerified && (
+                <button
+                  className="mt-2 text-yellow-800 underline hover:text-yellow-900 cursor-pointer"
+                  onClick={() => router.push("/account/verifyEmail")}
+                >
+                  Verify Email Now
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Address */}
+          <div className="flex items-center gap-4 p-5 border border-yellow-700 rounded-lg shadow-sm bg-yellow-100">
+            <FaAddressCard className="text-yellow-700 w-10 h-10" />
+            <div className="flex-1">
+              <h2 className="font-semibold text-yellow-900">Address</h2>
+              {address ? (
+                <p className="text-yellow-800">
+                  {address.street}, {address.city}, {address.country}{" "}
+                  {address.zip}
+                </p>
+              ) : (
+                <p className="text-yellow-600 italic">No address available</p>
+              )}
+              <button
+                onClick={() => router.push("/account/address")}
+                className="mt-2 text-yellow-800 underline hover:text-yellow-900 cursor-pointer"
+              >
+                Edit Address
+              </button>
+            </div>
+          </div>
+
+          {/* Password */}
+          <div className="flex items-center gap-4 p-5 border border-yellow-700 rounded-lg shadow-sm bg-yellow-100">
+            <MdOutlineLockReset className="text-yellow-700 w-10 h-10" />
+            <div>
+              <h2 className="font-semibold text-yellow-900">Password</h2>
+              <p className="text-yellow-800">********</p>
+              <button
+                onClick={() => router.push("/account/resetPassword")}
+                className="mt-2 text-yellow-800 underline hover:text-yellow-900 cursor-pointer"
+              >
+                Reset Password
+              </button>
+            </div>
+          </div>
+
+          {/* Account Actions */}
+          <div className="flex flex-col justify-center gap-4 p-5 border border-yellow-700 rounded-lg shadow-sm bg-red-50">
+            <button
+              onClick={async () => {
+                const confirmed = await Swal.fire({
+                  title: "Are you sure?",
+                  text: "This action will permanently delete your account!",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonText: "Yes, delete it",
+                  cancelButtonText: "Cancel",
+                });
+                if (confirmed.isConfirmed) {
+                  const emailConfirmed = await showEmailConfirmPopup();
+                  if (emailConfirmed) {
+                    handleDeleteAccount();
+                  }
+                }
+              }}
+              className="w-full cursor-pointer bg-yellow-800 hover:bg-yellow-900 text-white font-semibold py-2 rounded-md transition"
             >
-              <path
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                strokeWidth={2}
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-            </svg>
-            Delete Account
-          </button>
-          <div
-            onClick={() => {
-              Swal.fire({
-                title: "Do You Want To Log Out?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, Log out!",
-              }).then(async (result) => {
+              <FaTrash className="inline mr-2" /> Delete Account
+            </button>
+
+            <button
+              onClick={async () => {
+                const result = await Swal.fire({
+                  title: "Log out?",
+                  text: "You will need to log in again to access your account.",
+                  icon: "question",
+                  showCancelButton: true,
+                  confirmButtonText: "Log Out",
+                  cancelButtonText: "Cancel",
+                });
                 if (result.isConfirmed) {
-                  await logout();
+                  await auth.signOut();
                   router.push("/login");
                 }
-              });
-            }}
-          >
-            <LogoutButton />
+              }}
+              className="w-full cursor-pointer bg-yellow-800 hover:bg-yellow-900 text-white font-semibold py-2 rounded-md transition flex items-center gap-1 justify-center"
+            >
+              <IoMdLogOut size={20} />
+              Log Out
+            </button>
           </div>
         </section>
-        {/*  */}
       </main>
     </LoadWrapper>
   );

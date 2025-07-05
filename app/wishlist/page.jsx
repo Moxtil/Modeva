@@ -1,135 +1,205 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { MyCartItems } from "../context/CartContext";
-import { IoHeartSharp } from "react-icons/io5";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import Swal from "sweetalert2";
 import AddToFavButton from "../components/AddToFavButton";
 import Image from "next/image";
 import Link from "next/link";
-import { FaStar } from "react-icons/fa";
-import wishlistImg from "../assets/undraw_wishlist_0k5w.svg";
-import LoadWrapper from "../context/HomeWrapper";
 import RatingStars from "../components/RatingStars";
 import { FiShoppingBag } from "react-icons/fi";
+import wishlistImg from "../assets/undraw_wishlist_0k5w.svg";
+import LoadWrapper from "../context/HomeWrapper";
+
 export default function page() {
   const { toggleFavorite, user } = useContext(MyCartItems);
   const [favoriteItems, setFavoriteItems] = useState([]);
 
   const loadFavorites = async (user) => {
     if (!user) return;
-
     const favRef = collection(db, "users", user.email, "favorite-items");
     const snapshot = await getDocs(favRef);
-
     const items = snapshot.docs.map((doc) => doc.data().product);
     setFavoriteItems(items);
   };
 
   useEffect(() => {
-    if (user) {
-      loadFavorites(user);
-    }
+    if (user) loadFavorites(user);
   }, [user]);
+
+  // هان نخزن إزاحات السحب لكل بطاقة (key: item.id, value: offsetX)
+  const [swipeOffsets, setSwipeOffsets] = useState({});
+
+  // متغيرات حفظ البداية خلال اللمس
+  const touchStartX = useRef(0);
+  const touchCurrentX = useRef(0);
+  const touchItemId = useRef(null);
+
+  // تفعيل سحب البطاقة
+  const handleTouchStart = (e, id) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchCurrentX.current = touchStartX.current;
+    touchItemId.current = id;
+  };
+
+  const handleTouchMove = (e, id) => {
+    if (touchItemId.current !== id) return;
+    touchCurrentX.current = e.touches[0].clientX;
+    let diff = touchCurrentX.current - touchStartX.current;
+    if (diff < -100) diff = -100; // تحديد حد أقصى للسحب يسار
+    if (diff > 100) diff = 100; // تحديد حد أقصى للسحب يمين
+
+    setSwipeOffsets((prev) => ({
+      ...prev,
+      [id]: diff,
+    }));
+  };
+
+  const handleTouchEnd = (id) => {
+    if (!swipeOffsets[id]) return;
+
+    // إذا سحب أكثر من 80px يمين أو يسار، نعتبرها حذف
+    if (swipeOffsets[id] <= -80 || swipeOffsets[id] >= 80) {
+      Swal.fire({
+        title: "Are you sure to remove this item?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ca8a04",
+        cancelButtonColor: "#999",
+        confirmButtonText: "Yes, remove",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await toggleFavorite(
+            user,
+            favoriteItems.find((i) => i.id === id)
+          );
+          Swal.fire({
+            title: "Removed!",
+            icon: "success",
+            timer: 700,
+            showConfirmButton: false,
+          });
+          loadFavorites(user);
+          setSwipeOffsets((prev) => {
+            const copy = { ...prev };
+            delete copy[id];
+            return copy;
+          });
+        } else {
+          // رجع البطاقة للوضع الطبيعي
+          setSwipeOffsets((prev) => ({
+            ...prev,
+            [id]: 0,
+          }));
+        }
+      });
+    } else {
+      // رجع البطاقة للوضع الطبيعي
+      setSwipeOffsets((prev) => ({
+        ...prev,
+        [id]: 0,
+      }));
+    }
+    touchItemId.current = null;
+  };
 
   return (
     <LoadWrapper>
-      <main onClick={() => console.log(favoriteItems)} className="px-2 py-2">
-        <header>
-          <h2 className="flex items-center gap-1 text-2xl">
-            <IoHeartSharp color="red" />
+      <main className="px-4 py-6 max-w-7xl mx-auto">
+        <header className="flex items-center gap-3 mb-6">
+          <FiShoppingBag color="#ca8a04" size={30} />
+          <h1 className="text-3xl font-extrabold text-yellow-900 select-none">
             Wishlist
-          </h2>
+          </h1>
         </header>
 
-        <section className="flex justify-center items-center p-2 my-5">
-          {favoriteItems.length === 0 && (
-            <div>
-              <Image
-                src={wishlistImg}
-                alt="No Favorite Items"
-                width={400}
-                height={275}
-              />
-              <div className="flex flex-col gap-3 p-2">
-                <h2 className="text-lg text-yellow-800">
-                  Looks like you haven't added anything yet!
-                </h2>
-                <Link
-                  href={"/shopping"}
-                  className="flex items-center justify-center gap-2 bg-amber-900 px-5 py-2 text-white my-2 shadow-sm shadow-amber-800 text-lg"
-                >
-                  Go shopping <FiShoppingBag />
-                </Link>
-              </div>
-            </div>
-          )}
-        </section>
-        <section className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 w-full my-4">
-          {favoriteItems.map((item) => {
-            return (
+        {favoriteItems.length === 0 ? (
+          <section className="flex flex-col items-center justify-center gap-6 py-20">
+            <Image
+              src={wishlistImg}
+              alt="No Favorite Items"
+              width={350}
+              height={240}
+              priority
+            />
+            <h2 className="text-xl text-yellow-800 font-semibold text-center">
+              Looks like you haven't added anything to your wishlist yet!
+            </h2>
+            <Link
+              href="/shopping"
+              className="inline-flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 transition text-white font-bold px-6 py-3 rounded-lg shadow-md shadow-yellow-400"
+            >
+              Go Shopping <FiShoppingBag size={22} />
+            </Link>
+          </section>
+        ) : (
+          <section className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            {favoriteItems.map((item) => (
               <div
-                className="fav-item overflow-hidden transition-all duration-200
-              w-full relative bg-gray-50  p-3 flex flex-col gap-1 rounded-xl shadow-md shadow-[#333]"
                 key={item.id}
-                data-aos="fade-up"
+                className="relative bg-white rounded-xl shadow-md p-4 flex flex-col overflow-hidden cursor-pointer select-none transition-transform duration-200"
+                style={{
+                  transform: `translateX(${swipeOffsets[item.id] || 0}px)`,
+                  boxShadow:
+                    swipeOffsets[item.id] &&
+                    Math.abs(swipeOffsets[item.id]) > 20
+                      ? "0 8px 15px rgba(202, 138, 4, 0.4)"
+                      : "",
+                  touchAction: "pan-y",
+                }}
+                onTouchStart={(e) => handleTouchStart(e, item.id)}
+                onTouchMove={(e) => handleTouchMove(e, item.id)}
+                onTouchEnd={() => handleTouchEnd(item.id)}
               >
-                <div
-                  className="absolute  top-2 right-2 hover:bg-[#eee]  transition-all duration-300 rounded-full p-1"
-                  onClick={async () => {
-                    await toggleFavorite(user, item);
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(user, item);
                     Swal.fire({
-                      title: "Done!",
-                      text: "Item Is Not On Your Favorite List!",
+                      title: "Removed!",
+                      text: "Item removed from your wishlist.",
                       icon: "success",
-                      timer: 750,
+                      timer: 700,
                       showConfirmButton: false,
                     });
                     loadFavorites(user);
                   }}
+                  className="absolute top-3 right-3 p-1 rounded-full bg-yellow-100 hover:bg-yellow-200 transition-colors z-10"
+                  aria-label="Remove from wishlist"
+                  title="Remove from wishlist"
                 >
-                  <AddToFavButton item={item} size={25} />
-                </div>
-                <Link
-                  href={`/shopping/${item.id}`}
-                  className="flex justify-center items-center"
-                >
+                  <AddToFavButton item={item} size={28} />
+                </button>
+
+                <Link href={`/shopping/${item.id}`} className="block">
                   <Image
                     src={item?.images[0]}
                     alt={item.title}
-                    width={300}
-                    height={200}
-                    className="h-48 object-contain"
+                    width={280}
+                    height={180}
+                    className="w-full h-44 object-contain rounded-md mb-3"
                   />
-                </Link>
-                <div className="flex flex-col gap-3 p-1 justify-between ">
-                  <div className="flex justify-between items-center gap-2 overflow-hidden">
-                    <p className="text-[#757575] text-[12px] truncate">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs text-gray-500 truncate max-w-[60%]">
                       {item.category}
-                    </p>
-                    {/* <h2 className="text-yellow-400 flex items-center gap-1 font-semibold">
-                      <FaStar size={17} color="gold" />
-                      <span>{item.rating}</span>
-                    </h2> */}
-                    <div className="flex items-center gap-1 text-[15px] text-yellow-400 font-semibold">
+                    </span>
+                    <div className="flex items-center gap-1 text-yellow-500 font-semibold text-sm select-none">
                       <RatingStars rating={item.rating} />
-                      <h3>{item.rating}</h3>
+                      <span>{item.rating.toFixed(1)}</span>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center gap-2">
-                    <h2 className="text-sm font-semibold  truncate">
-                      {item.title}
-                    </h2>
-                    <h2 className="font-bold text-[16px]">
-                      ${item.price.toFixed(2)}
-                    </h2>
-                  </div>
-                </div>
+                  <h3 className="text-sm font-semibold text-gray-900 truncate mb-1">
+                    {item.title}
+                  </h3>
+                  <p className="font-bold text-yellow-700 text-lg">
+                    ${item.price.toFixed(2)}
+                  </p>
+                </Link>
               </div>
-            );
-          })}
-        </section>
+            ))}
+          </section>
+        )}
       </main>
     </LoadWrapper>
   );

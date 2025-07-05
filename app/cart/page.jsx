@@ -95,10 +95,13 @@ export default function page() {
                           />
                         </Link>
                         <div className="flex flex-col gap-4 p-2 items-start ">
+                          <h3 className="text-[16px] text-[#777]">
+                            {item.product?.brand}
+                          </h3>
                           <h2 className="text-xl font-semibold">
                             {item.product.title}
                           </h2>
-                          <h2 className="text-red-600 font-semibold ">
+                          <h2 className="text-yellow-800 font-bold ">
                             ${item.product.price.toFixed(2)}
                           </h2>
                           {/* <h2 className="font-bold flex items-center gap-2">
@@ -156,7 +159,7 @@ export default function page() {
                 <p>$0.00</p>
               </div>
               <div className="flex justify-between items-center p-2">
-                <h2 className="text-[17px] font-semibold">
+                <h2 className="text-[17px] font-semibold text-[#8b4513]">
                   Shipping Address :
                 </h2>
                 <div className="text-[17px]">
@@ -183,8 +186,10 @@ export default function page() {
                 </div>
               )}
               <div className="flex justify-between items-center p-2 font-semibold">
-                <h2 className="text-lg">Total : </h2>
-                <p className="text-lg">${total.toFixed(2)}</p>
+                <h2 className="text-lg font-bold text-[#8b4513]">Total : </h2>
+                <p className="text-lg font-bold text-[#8b4513]">
+                  ${total.toFixed(2)}
+                </p>
               </div>
 
               <PayButton />

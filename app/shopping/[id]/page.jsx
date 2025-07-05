@@ -72,7 +72,7 @@ export default async function page({ params }) {
         </section>
       </Suspense>
       <h1 className="text-3xl text-center font-semibold my-3 text-[#757575]">
-        Look for more
+        Keep exploring
       </h1>
       <Suspense fallback={<div className="loader"></div>}>
         <section className="grid md:grid-cols-4 lg:grid-cols-5 grid-cols-2 gap-4 w-full my-4">
