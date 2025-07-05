@@ -21,7 +21,7 @@ import { BiLike } from "react-icons/bi";
 import { IoCallOutline, IoCardOutline } from "react-icons/io5";
 import { TbTruckDelivery } from "react-icons/tb";
 
-import { FaAngleDoubleDown } from "react-icons/fa";
+import { FaHeart, FaSmile, FaHeadset, FaAngleDoubleDown } from "react-icons/fa";
 import { Prompt } from "next/font/google";
 import ShopCardTwo from "./components/ShopCardTwo";
 import Button from "./components/Button";
@@ -32,6 +32,23 @@ const prompt = Prompt({
   subsets: ["latin"],
   weight: ["600"],
 });
+const reviews = [
+  {
+    name: "Sarah",
+    text: "I absolutely love the quality! The fabric feels premium and the packaging was stunning. Definitely coming back!",
+    icon: <FaHeart className="text-pink-500 text-xl" />,
+  },
+  {
+    name: "Ahmed",
+    text: "Super comfortable and very stylish! Got compliments the first day I wore it. Worth every penny.",
+    icon: <FaSmile className="text-yellow-400 text-xl" />,
+  },
+  {
+    name: "Lina",
+    text: "Customer support was exceptional. They helped me with sizing and followed up after delivery. Impressive service!",
+    icon: <FaHeadset className="text-blue-500 text-xl" />,
+  },
+];
 
 const newImages = [
   {
@@ -165,34 +182,30 @@ export default function Home() {
             <Button />
           </Link>
         </section>
-        {/* {"Customer Review"} */}
-        <section className="bg-[#fefefe] py-10 px-4" data-aos="fade-up">
-          <h2 className="text-3xl text-center mb-8 text-[#222]">
+        <section className="py-10 px-4" data-aos="fade-up">
+          <h2 className="text-3xl text-center mb-8 font-[500] text-[#222]">
             What Our Customers Say
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {[
-              { name: "Sarah", text: "Amazing quality and fast delivery!" },
-              {
-                name: "Ahmed",
-                text: "Stylish and comfortable. Highly recommend!",
-              },
-              {
-                name: "Lina",
-                text: "Great customer support and beautiful designs.",
-              },
-            ].map((review, i) => (
-              <div key={i} className="p-6 bg-white shadow-md rounded-md">
-                <p className="text-sm text-[#555] italic">"{review.text}"</p>
-                <p className="mt-4 font-semibold text-[#8B4513]">
-                  - {review.name}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto max-w-8xl">
+            {reviews.map((review, i) => (
+              <div
+                key={i}
+                className="p-6 bg-white shadow-lg rounded-2xl hover:shadow-2xl transition-shadow duration-300 border border-gray-100"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  {review.icon}
+                  <h3 className="text-lg font-semibold text-[#333]">
+                    {review.name}
+                  </h3>
+                </div>
+                <p className="text-sm text-[#555] italic leading-relaxed">
+                  "{review.text}"
                 </p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Special Offers For All*/}
         <section className="my-8 p-3" data-aos="fade-up">
           <h1 className="text-3xl text-[#222] text-center">
             Where elegance and grace become one.
