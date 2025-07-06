@@ -26,17 +26,14 @@ export default function page() {
 
   useEffect(() => {
     if (user) loadFavorites(user);
-  }, [user]);
+  }, [favoriteItems, user]);
 
-  // هان نخزن إزاحات السحب لكل بطاقة (key: item.id, value: offsetX)
   const [swipeOffsets, setSwipeOffsets] = useState({});
 
-  // متغيرات حفظ البداية خلال اللمس
   const touchStartX = useRef(0);
   const touchCurrentX = useRef(0);
   const touchItemId = useRef(null);
 
-  // تفعيل سحب البطاقة
   const handleTouchStart = (e, id) => {
     touchStartX.current = e.touches[0].clientX;
     touchCurrentX.current = touchStartX.current;
@@ -87,7 +84,6 @@ export default function page() {
             return copy;
           });
         } else {
-          // رجع البطاقة للوضع الطبيعي
           setSwipeOffsets((prev) => ({
             ...prev,
             [id]: 0,
@@ -95,7 +91,6 @@ export default function page() {
         }
       });
     } else {
-      // رجع البطاقة للوضع الطبيعي
       setSwipeOffsets((prev) => ({
         ...prev,
         [id]: 0,
@@ -186,7 +181,7 @@ export default function page() {
                     </span>
                     <div className="flex items-center gap-1 text-yellow-500 font-semibold text-sm select-none">
                       <RatingStars rating={item.rating} />
-                      <span>{item.rating.toFixed(1)}</span>
+                      <span className="hidden">{item.rating.toFixed(1)}</span>
                     </div>
                   </div>
                   <h3 className="text-sm font-semibold text-gray-900 truncate mb-1">

@@ -4,8 +4,7 @@ import RatingStars from "@/app/components/RatingStars";
 import ReminderBtn from "@/app/components/ReminderBtn";
 import ShoppingCard from "@/app/components/ShoppingCard";
 import React, { Suspense } from "react";
-import { IoStarSharp } from "react-icons/io5";
-
+import { Edu_QLD_Beginner } from "next/font/google";
 const getData = async (id) => {
   const req = await fetch(`https://dummyjson.com/products/${id}`);
   const res = await req.json();
@@ -18,6 +17,11 @@ const getSimilarItems = async (cate) => {
   return res;
 };
 
+const titleFont = Edu_QLD_Beginner({
+  weight: ["600"],
+  subsets: ["latin"],
+});
+
 export default async function page({ params }) {
   const item = await getData(params.id);
   const fetchSimItems = await getSimilarItems(item.category);
@@ -29,7 +33,7 @@ export default async function page({ params }) {
           <ItemImages item={item} />
           <div className="w-full md:w-1/2 flex flex-col gap-6 items-start">
             <h3 className="text-sm text-[#727272]">{item?.brand}</h3>
-            <h1 className="text-4xl font-bold">{item.title}</h1>
+            <h1 className="text-4xl font-bold text-yellow-800">{item.title}</h1>
             <h1 className="text-sm font-semibold">{item?.category}</h1>
 
             <p className="text-sm text-[#727272]">{item.description}</p>
@@ -52,12 +56,12 @@ export default async function page({ params }) {
             >
               {item?.returnPolicy}
             </h1>
-            <h1 className="text-[16px] font-bold">
+            <h1 className="text-[16px] font-bold text-yellow-800">
               {item?.warrantyInformation}
             </h1>
             <div className="flex items-center gap-1 text-[15px] text-yellow-400 font-semibold">
               <RatingStars rating={item.rating} />
-              <h3>{item.rating}</h3>
+              <h3 className="translate-y-[1px]">{item.rating}</h3>
             </div>
             <h2 className="text-red-600 font-semibold ">
               ${item.price.toFixed(2)}
@@ -71,7 +75,9 @@ export default async function page({ params }) {
           </div>
         </section>
       </Suspense>
-      <h1 className="text-3xl text-center font-semibold my-3 text-[#757575]">
+      <h1
+        className={`${titleFont.className} text-3xl text-center font-semibold my-3 text-yellow-700`}
+      >
         Keep exploring
       </h1>
       <Suspense fallback={<div className="loader"></div>}>

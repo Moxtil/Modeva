@@ -54,7 +54,7 @@ const ShoppingCard = ({
         <div
           className={`hidden sm:block absolute w-auto p-1 -translate-y-0.5 text-center ${
             stock === "Out of Stock" ? "bg-red-500" : "bg-green-500"
-          } font-semibold text-sm text-white top-[16px] rounded-sm right-1`}
+          } font-semibold text-xs text-white top-[16px] rounded-3xl right-1`}
         >
           {stock === "Out of Stock" ? "Out Of Stock !" : "Available Now"}
         </div>
@@ -67,15 +67,17 @@ const ShoppingCard = ({
           className="card-img object-contain"
         />
         <div className="card-info">
-          <p className="text-title text-[13px] truncate overflow whitespace-nowrap">
+          <p className="text-[11px] text-[#727272]">{brand}</p>
+          <p className="text-title text-[14px] text-yellow-800 my-1 truncate overflow whitespace-nowrap">
             {title}
           </p>
-          <p className="text-body text-xs text-[#727272]">{brand}</p>
           <div className="text-title flex justify-between items-start flex-col gap-3 overflow-hidden">
-            <span>${price}</span>
-            <div className="flex items-center gap-1 flex-wrap sm:flex-nowrap">
+            <span className="font-semibold text-yellow-800 text-lg">
+              ${price}
+            </span>
+            <div className="flex items-center gap-1 flex-wrap sm:flex-nowrap mb-2">
               <RatingStars rating={rate} />
-              <span className="text-yellow-400 md:block hidden"> {rate}</span>
+              <span className="text-yellow-400 hidden"> {rate}</span>
             </div>
           </div>
         </div>
@@ -100,8 +102,8 @@ const ShoppingCard = ({
             </div>
           )}
 
-          <Link href={`/shopping/${id}`}>
-            <button className="group flex text-sm mx-1 h-7 px-4 flex-col items-center justify-center rounded-full bg-[#F1ddcf]  py-[0.5em] shadow-[inset_0px_2px_4px_0px_#f9f1eb,inset_0px_-2px_4px_0px_#e8c8b0,0px_-2px_16px_0px_#e8c8b0,0px_2px_16px_0px_#f9f1eb] duration-200 hover:translate-y-[5%] active:translate-y-[7%] active:shadow-[inset_0px_-2px_4px_0px_#f9f1eb,inset_0px_2px_4px_0px_#e8c8b0,0px_2px_16px_0px_#e8c8b0,0px_2px_16px_0px_#f9f1eb]">
+          <Link href={`/shopping/${id}`} className="cursor-pointer">
+            <button className="group cursor-pointer flex text-sm mx-1 h-7 px-4 flex-col items-center justify-center rounded-full bg-[#F1ddcf]  py-[0.5em] shadow-[inset_0px_2px_4px_0px_#f9f1eb,inset_0px_-2px_4px_0px_#e8c8b0,0px_-2px_16px_0px_#e8c8b0,0px_2px_16px_0px_#f9f1eb] duration-200 hover:translate-y-[5%] active:translate-y-[7%] active:shadow-[inset_0px_-2px_4px_0px_#f9f1eb,inset_0px_2px_4px_0px_#e8c8b0,0px_2px_16px_0px_#e8c8b0,0px_2px_16px_0px_#f9f1eb]">
               <p className="font-nunito text-[14px] cursor-pointer font-semibold text-[#d19466] duration-200 group-active:translate-y-[5%]">
                 Details
               </p>
@@ -159,11 +161,6 @@ const StyledWrapper = styled.div`
   .text-title {
     font-weight: 900;
     line-height: 1.5;
-  }
-
-  .text-body {
-    font-size: 0.9em;
-    padding-bottom: 10px;
   }
 
   /*Button*/
