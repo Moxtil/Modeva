@@ -78,8 +78,6 @@ export default function AccountPage() {
   async function handleDeleteAccount() {
     try {
       if (!user) return;
-      if (user.email !== confirmEmail) return;
-
       await deleteUser(user);
 
       Swal.fire({
@@ -223,21 +221,20 @@ export default function AccountPage() {
           {/* Account Actions */}
           <div className="flex flex-col justify-center gap-4 p-5 border border-yellow-700 rounded-lg shadow-sm bg-red-50">
             <button
-              onClick={async () => {
-                const confirmed = await Swal.fire({
+              onClick={() => {
+                Swal.fire({
                   title: "Are you sure?",
-                  text: "This action will permanently delete your account!",
+                  text: "You won't be able to revert this!",
                   icon: "warning",
                   showCancelButton: true,
-                  confirmButtonText: "Yes, delete it",
-                  cancelButtonText: "Cancel",
-                });
-                if (confirmed.isConfirmed) {
-                  const emailConfirmed = await showEmailConfirmPopup();
-                  if (emailConfirmed) {
+                  confirmButtonColor: "#d33",
+                  cancelButtonColor: "#3085d6",
+                  confirmButtonText: "Yes, delete it!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
                     handleDeleteAccount();
                   }
-                }
+                });
               }}
               className="w-full cursor-pointer bg-yellow-800 hover:bg-yellow-900 text-white font-semibold py-2 rounded-md transition"
             >
