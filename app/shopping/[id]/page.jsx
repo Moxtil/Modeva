@@ -61,7 +61,9 @@ export default async function page({ params }) {
             </h1>
             <div className="flex items-center gap-1 text-[15px] text-yellow-400 font-semibold">
               <RatingStars rating={item.rating} />
-              <h3 className="translate-y-[1px]">{item.rating}</h3>
+              <h3 className="translate-y-[1px] font-bold">{`(${item.rating.toFixed(
+                1
+              )})`}</h3>
             </div>
             <h2 className="text-red-600 font-semibold ">
               ${item.price.toFixed(2)}

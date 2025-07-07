@@ -34,7 +34,7 @@ const prompt = Prompt({
 });
 const reviews = [
   {
-    name: "Sarah",
+    name: "Thomas",
     text: "I absolutely love the quality! The fabric feels premium and the packaging was stunning. Definitely coming back!",
     icon: <FaHeart className="text-pink-500 text-xl" />,
   },
@@ -44,7 +44,7 @@ const reviews = [
     icon: <FaSmile className="text-yellow-400 text-xl" />,
   },
   {
-    name: "Lina",
+    name: "Morgan",
     text: "Customer support was exceptional. They helped me with sizing and followed up after delivery. Impressive service!",
     icon: <FaHeadset className="text-blue-500 text-xl" />,
   },
@@ -54,14 +54,17 @@ const newImages = [
   {
     id: 1,
     img: newImg1,
+    bg: "#eee",
   },
   {
     id: 2,
     img: newImg2,
+    bg: "#fff",
   },
   {
     id: 3,
     img: newImg3,
+    bg: "#fff",
   },
 ];
 export default function Home() {
@@ -205,6 +208,26 @@ export default function Home() {
             ))}
           </div>
         </section>
+        <section className="m-6 shadow-md py-16 px-2" data-aos="fade-up">
+          <div className="mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+              <h2 className="text-4xl font-bold text-[#8B4513]">50K+</h2>
+              <p className="text-sm text-[#555]">Happy Customers</p>
+            </div>
+            <div>
+              <h2 className="text-4xl font-bold text-[#8B4513]">1K+</h2>
+              <p className="text-sm text-[#555]">Products Sold</p>
+            </div>
+            <div>
+              <h2 className="text-4xl font-bold text-[#8B4513]">5+</h2>
+              <p className="text-sm text-[#555]">Years Experience</p>
+            </div>
+            <div>
+              <h2 className="text-4xl font-bold text-[#8B4513]">100%</h2>
+              <p className="text-sm text-[#555]">Customer Satisfaction</p>
+            </div>
+          </div>
+        </section>
 
         <section className="my-8 p-3" data-aos="fade-up">
           <h1 className="text-3xl text-[#222] text-center">
@@ -249,17 +272,17 @@ export default function Home() {
             Style Tips & Articles
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6  mx-auto">
-            {newImages.map((i, index) => (
+            {newImages.map((i) => (
               <div
                 key={i.id}
-                className="bg-white shadow-md rounded-md overflow-hidden"
+                className={`bg-white shadow-md rounded-md overflow-hidden`}
               >
                 <Image
                   src={i.img}
                   width={300}
                   height={200}
                   alt="Blog"
-                  className="w-full h-48 object-cover"
+                  className={`bg-[${i.bg}] w-full h-48 object-contain object-top `}
                 />
                 <div className="p-4">
                   <h3 className="font-bold text-[#8B4513] mb-2">
@@ -271,29 +294,6 @@ export default function Home() {
                 </div>
               </div>
             ))}
-          </div>
-        </section>
-        <section
-          className="m-6 shadow-xl bg-white py-16 px-4"
-          data-aos="fade-up"
-        >
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <h2 className="text-4xl font-bold text-[#8B4513]">50K+</h2>
-              <p className="text-sm text-[#555]">Happy Customers</p>
-            </div>
-            <div>
-              <h2 className="text-4xl font-bold text-[#8B4513]">1K+</h2>
-              <p className="text-sm text-[#555]">Products Sold</p>
-            </div>
-            <div>
-              <h2 className="text-4xl font-bold text-[#8B4513]">5+</h2>
-              <p className="text-sm text-[#555]">Years Experience</p>
-            </div>
-            <div>
-              <h2 className="text-4xl font-bold text-[#8B4513]">100%</h2>
-              <p className="text-sm text-[#555]">Customer Satisfaction</p>
-            </div>
           </div>
         </section>
 

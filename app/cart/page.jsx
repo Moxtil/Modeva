@@ -46,10 +46,7 @@ export default function page() {
   return (
     <LoadWrapper>
       <main className="p-4">
-        <h1
-          className="text-2xl text-[#222] px-6 flex items-center gap-2"
-          onClick={() => console.log(items)}
-        >
+        <h1 className="text-2xl text-[#222] px-6 flex items-center gap-2 -translate-y-4">
           <span>Cart</span> <FiShoppingBag size={20} />
         </h1>
         {items.length === 0 ? (
@@ -77,11 +74,11 @@ export default function page() {
           </section>
         ) : (
           <section className="flex justify-between flex-col md:flex-row">
-            <div className="w-full md:w-2/3 ">
+            <div className="w-full md:w-2/3 -translate-y-2.5">
               {items.map((item, id) => {
                 return (
                   <section key={id}>
-                    <div className="shadow-sm shadow-[#333] flex justify-between items-center gap-4 m-3  bg-[#ffffff] p-4">
+                    <div className="shadow-md rounded-md hover:scale-[1.01] transition-all shadow-[#333] flex justify-between items-center gap-4 m-3  bg-[#ffffff] p-4">
                       <div className="flex gap-5">
                         <Link
                           href={`/shopping/${item.product.id}`}
@@ -110,7 +107,7 @@ export default function page() {
                           </h2> */}
                           <div className="flex items-center gap-1 text-[15px] text-yellow-400 font-semibold">
                             <RatingStars rating={item.product.rating} />
-                            <h3>{item.product.rating}</h3>
+                            <h3>{`(${item.product.rating.toFixed(1)})`}</h3>
                           </div>
                         </div>
                       </div>
@@ -146,7 +143,7 @@ export default function page() {
                 );
               })}
             </div>
-            <div className="flex flex-col gap-5 p-2 w-full md:w-1/3">
+            <div className="flex flex-col gap-5 w-full md:w-1/3 border-2 border-yellow-800 shadow-xl rounded-lg p-4">
               <h1 className="text-2xl">SHOPPING INFO</h1>
               <p className="bg-[#EDE5E1] p-3">
                 Hooray! You have promo code!{" "}

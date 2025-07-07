@@ -1,91 +1,95 @@
+"use client";
 import Image from "next/image";
 import React from "react";
+import {
+  FaTag,
+  FaPalette,
+  FaStar,
+  FaStarHalfAlt,
+  FaRegStar,
+} from "react-icons/fa";
 
-const ShopCardThree = ({ img, category, price }) => {
+const ShopCardThree = ({ img, category, price, rating = 4.5 }) => {
+  const renderStars = () => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={i} className="text-yellow-500" />);
+    }
+
+    if (hasHalfStar) {
+      stars.push(<FaStarHalfAlt key="half" className="text-yellow-500" />);
+    }
+
+    while (stars.length < 5) {
+      stars.push(
+        <FaRegStar key={`empty-${stars.length}`} className="text-yellow-500" />
+      );
+    }
+
+    return stars;
+  };
+
+  const colors = [
+    { id: "color1", color: "#c7a17a", label: "Beige" },
+    { id: "color2", color: "#a67c52", label: "Brown" },
+    { id: "color3", color: "#7c584c", label: "Cocoa" },
+    { id: "color4", color: "#e2c6ac", label: "Light Sand" },
+    { id: "color5", color: "#bfa6a0", label: "Dusty Rose" },
+  ];
+
   return (
-    <div className="group block">
-      <Image
-        src={img}
-        alt={category}
-        width={300}
-        height={200}
-        className="h-[350px] w-full max-w-[350px] object-cover sm:h-[450px]"
-      />
+    <div className="bg-[#fdf8f3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 max-w-xs w-full mx-auto sm:max-w-sm">
+      {/* Product Image */}
+      <div className="relative w-full h-64 sm:h-72">
+        <Image
+          src={img}
+          alt={category}
+          fill
+          className="object-cover object-center transition-transform duration-300 hover:scale-105"
+        />
+      </div>
 
-      <div className="mt-1.5">
-        <p className="text-xs text-gray-500">Colors</p>
-
-        <div className="mt-1.5 flex gap-1">
-          <form>
-            <fieldset>
-              <legend className="sr-only">Color</legend>
-            </fieldset>
-
-            <div className="flex flex-wrap justify-center gap-1 [&:hover_label]:opacity-75">
-              <div>
-                <input type="checkbox" id="ColorSg" className="sr-only" />
-
-                <label
-                  htmlFor="ColorSg"
-                  className="block size-4 cursor-pointer rounded-full bg-[#595759] transition hover:!opacity-100"
-                >
-                  <span className="sr-only"> Space Gray </span>
-                </label>
-              </div>
-
-              <div>
-                <input type="checkbox" id="ColorS" className="sr-only" />
-
-                <label
-                  htmlFor="ColorS"
-                  className="block size-4 cursor-pointer rounded-full bg-[#d2d3d4] transition hover:!opacity-100"
-                >
-                  <span className="sr-only"> Silver </span>
-                </label>
-              </div>
-
-              <div>
-                <input type="checkbox" id="ColorP" className="sr-only" />
-
-                <label
-                  htmlFor="ColorP"
-                  className="block size-4 cursor-pointer rounded-full bg-[#d89f97] transition hover:!opacity-100"
-                >
-                  <span className="sr-only"> Pink </span>
-                </label>
-              </div>
-
-              <div>
-                <input type="checkbox" id="ColorG" className="sr-only" />
-
-                <label
-                  htmlFor="ColorG"
-                  className="block size-4 cursor-pointer rounded-full bg-[#afbfab] transition hover:!opacity-100"
-                >
-                  <span className="sr-only"> Pink </span>
-                </label>
-              </div>
-
-              <div>
-                <input type="checkbox" id="ColorSb" className="sr-only" />
-
-                <label
-                  htmlFor="ColorSb"
-                  className="block size-4 cursor-pointer rounded-full bg-[#91a5bb] transition hover:!opacity-100"
-                >
-                  <span className="sr-only"> Pink </span>
-                </label>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div className="mt-3 flex justify-between text-sm">
-          <h3 className="text-gray-900 group-hover:underline group-hover:underline-offset-4">
+      {/* Product Details */}
+      <div className="p-4 sm:p-5">
+        {/* Category & Price */}
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-base sm:text-lg font-semibold text-[#4b3832] flex items-center gap-2">
+            <FaTag className="text-[#a67c52]" />
             {category}
           </h3>
+          <p className="text-lg sm:text-xl font-bold text-[#a67c52]">
+            ${price}
+          </p>
+        </div>
 
-          <p className="text-gray-900 font-semibold">${price}</p>
+        {/* Star Rating */}
+        <div className="flex items-center gap-1 text-sm mb-3">
+          {renderStars()}
+          <span className="ml-1 text-[#8b6b5c]">({rating})</span>
+        </div>
+
+        {/* Colors */}
+        <div>
+          <p className="text-sm text-[#8b6b5c] mb-2 flex items-center gap-1">
+            <FaPalette className="text-[#c7a17a]" />
+            Available Colors
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {colors.map(({ id, color, label }) => (
+              <label
+                key={id}
+                htmlFor={id}
+                title={label}
+                className="w-5 h-5 sm:w-6 sm:h-6 rounded-full ring-1 ring-gray-300 border border-white cursor-pointer hover:scale-110 transition-transform"
+                style={{ backgroundColor: color, display: "inline-block" }}
+              >
+                <input type="radio" name="color" id={id} className="sr-only" />
+              </label>
+            ))}
+          </div>
         </div>
       </div>
     </div>
