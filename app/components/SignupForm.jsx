@@ -2,7 +2,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
@@ -64,13 +63,13 @@ const SignupForm = () => {
     <form
       onSubmit={handleSubmit}
       method="post"
-      className="min-h-[575px] bg-white dark:bg-zinc-900 shadow-2xl  overflow-hidden border-4 border-blue-400 dark:border-yellow-800"
+      className=" md:max-w-1/2 lg:max-w-[45%]  shadow-2xl  overflow-hidden border-4 bg-black border-[#eeeeeea1] rounded-md"
     >
       <div className="px-8 py-8 md:px-10">
-        <h2 className="text-4xl font-extrabold text-center text-zinc-800 dark:text-white">
+        <h2 className="text-4xl font-extrabold text-center text-white">
           Welcome!
         </h2>
-        <p className="text-center text-zinc-600 dark:text-zinc-400 mt-3">
+        <p className="text-center text-zinc-600 mt-3">
           Join us—your journey starts here.{" "}
         </p>
         <div className="mt-10">
@@ -83,7 +82,7 @@ const SignupForm = () => {
             </label>
             <input
               placeholder="Username"
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-yellow-800 dark:focus:border-yellow-800 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400"
+              className="block w-full px-4 py-3 mt-2 border-2 rounded-lg border-[#333] bg-zinc-800 focus:border-gray-300 focus:ring-opacity-50 focus:outline-none focus:ring text-white"
               name="name"
               id="name"
               type="text"
@@ -101,7 +100,7 @@ const SignupForm = () => {
             </label>
             <input
               placeholder="you@example.com"
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-yellow-800 dark:focus:border-yellow-800 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400"
+              className="block w-full px-4 py-3 mt-2 border-2 rounded-lg border-[#333] bg-zinc-800 focus:border-gray-300 focus:ring-opacity-50 focus:outline-none focus:ring text-white"
               name="email"
               id="email"
               type="email"
@@ -121,7 +120,7 @@ const SignupForm = () => {
               minLength={8}
               maxLength={16}
               placeholder="••••••••"
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-yellow-800 dark:focus:border-yellow-800 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400"
+              className="block w-full px-4 py-3 mt-2 border-2 rounded-lg border-[#333] bg-zinc-800 focus:border-gray-300 focus:ring-opacity-50 focus:outline-none focus:ring text-white"
               name="password"
               id="password"
               type="password"
@@ -141,7 +140,7 @@ const SignupForm = () => {
               minLength={8}
               maxLength={16}
               placeholder="••••••••"
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-yellow-800 dark:focus:border-yellow-800 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-yellow-400"
+              className="block w-full px-4 py-3 mt-2 border-2 rounded-lg border-[#333] bg-zinc-800 focus:border-gray-300 focus:ring-opacity-50 focus:outline-none focus:ring text-white"
               name="confirmPassword"
               id="confirmPassword"
               type="password"
@@ -166,7 +165,7 @@ const SignupForm = () => {
           </div>
         </div>
       </div>
-      <div className="px-8 py-4 bg-blue-200 dark:bg-zinc-800">
+      <div className="px-8 py-4 bg-gray-100 dark:bg-zinc-800">
         <div className="text-sm text-blue-900 dark:text-blue-300 text-center">
           Already have an account?
           <Link className="font-medium underline mx-2" href="/login">

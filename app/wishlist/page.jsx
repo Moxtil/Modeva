@@ -56,7 +56,6 @@ export default function page() {
   const handleTouchEnd = (id) => {
     if (!swipeOffsets[id]) return;
 
-    // إذا سحب أكثر من 80px يمين أو يسار، نعتبرها حذف
     if (swipeOffsets[id] <= -80 || swipeOffsets[id] >= 80) {
       Swal.fire({
         title: "Are you sure to remove this item?",

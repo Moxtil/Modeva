@@ -21,6 +21,20 @@ body {
   margin: auto;
 }
 
+.sign-up,
+.login {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.sign-up {
+  background-image: url("./assets/Frame.png");
+}
+.login {
+  background-image: url("./assets/2.png");
+}
+
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 85px !important;
