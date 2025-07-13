@@ -43,7 +43,6 @@ const PayButton = () => {
     const data = await res.json();
     console.log(data);
     router.replace(data.url);
-    // window.location.href = data.url;
   };
 
   return (

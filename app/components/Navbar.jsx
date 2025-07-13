@@ -5,10 +5,14 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { CiMenuBurger, CiMenuFries } from "react-icons/ci";
 import { usePathname } from "next/navigation";
-import { FaHeart, FaUser, FaShoppingCart, FaSearch } from "react-icons/fa";
+import { LuUserCog } from "react-icons/lu";
+import { IoMdHeartEmpty } from "react-icons/io";
+import { IoSearchOutline } from "react-icons/io5";
+import { FiShoppingCart } from "react-icons/fi";
+
 import SearchField from "./Searchfield";
-import { useAuth } from "../context/AuthContext";
 import { MyCartItems } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Shopping", href: "/shopping" },
@@ -20,7 +24,7 @@ export default function Navbar() {
   const path = usePathname();
 
   return (
-    <header className={`bg-transparent relative w-full max-w-full z-50`}>
+    <header className={`block bg-transparent relative w-full max-w-full z-50`}>
       <div className=" mx-auto px-6 py-4 flex justify-between items-center w-full">
         <Link href={"/"} className={`text-2xl font-bold cursor-pointer`}>
           <span className="text-[#8B4513]">M</span>ODEVA
@@ -44,7 +48,7 @@ export default function Navbar() {
         </nav>
         <div className=" items-center gap-4 hidden md:flex">
           <Link href={"/cart"} className="relative">
-            <FaShoppingCart size={20} />
+            <FiShoppingCart size={23} />
             {items.length > 0 && (
               <div className="absolute -top-[12px] text-xs left-3 rounded-full border-2 border-[#333] text-white px-1.5 bg-amber-500">
                 {items.length}
@@ -52,16 +56,16 @@ export default function Navbar() {
             )}
           </Link>
           <Link href={"/wishlist"}>
-            <FaHeart size={20} />
+            <IoMdHeartEmpty size={23} />
           </Link>
           <Link href={"/account"}>
-            <FaUser size={20} />
+            <LuUserCog size={24} />
           </Link>
           <button
             className="cursor-pointer"
             onClick={() => setIsModalOpen(true)}
           >
-            <FaSearch size={20} />
+            <IoSearchOutline size={23} />
           </button>
           <SearchField
             isOpen={isModalOpen}
@@ -74,7 +78,7 @@ export default function Navbar() {
             className="cursor-pointer md:hidden"
             onClick={() => setIsModalOpen(true)}
           >
-            <FaSearch size={20} />
+            <IoSearchOutline size={23} />
           </button>
           <button
             className=" text-gray-700"
@@ -117,13 +121,13 @@ export default function Navbar() {
             ))}
             <div className="flex items-center gap-4">
               <Link href={"/cart"}>
-                <FaShoppingCart size={20} />
+                <FiShoppingCart size={23} />
               </Link>
               <Link href={"/wishlist"}>
-                <FaHeart size={20} />
+                <IoMdHeartEmpty size={23} />
               </Link>
               <Link href={"/account"}>
-                <FaUser size={20} />
+                <LuUserCog size={24} />
               </Link>
             </div>
           </motion.aside>
